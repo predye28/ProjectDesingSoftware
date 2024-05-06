@@ -1,0 +1,62 @@
+
+
+.menuEquipoTrabajo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #58A399;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px;
+    width: 100%; 
+    height: 100vh; 
+}
+.titulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #496989;
+    height: 80px;
+    top: 0px;
+    color: white;
+    text-align: center; 
+  }  
+
+.registrar-equipo,
+.editar-equipo {
+  position: absolute;
+  width: 150px;
+  height: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+  border-radius: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.registrar-equipo {
+  top: 200px;
+}
+
+.editar-equipo {
+  top: 450px;
+}
+
+
+.volverMenuEquipo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+  
