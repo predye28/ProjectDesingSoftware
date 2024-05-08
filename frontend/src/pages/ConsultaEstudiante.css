@@ -1,0 +1,88 @@
+.volverConsultaEstudiante{
+    position: fixed;
+    bottom: 20px; 
+    left: 20px; 
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.tablaConsultaEstudiantes{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    position: absolute; 
+    top: 150px; 
+    left: 600px; 
+    padding: 4px;
+    width: 50%; 
+    height: 60vh;
+}
+
+
+.consultarEstudiante{
+    position: fixed;
+    bottom: 20px; 
+    left: 200px; 
+    width: 150px;
+    height: 50px;
+    top: 390px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.generarExcel{
+    position: fixed;
+    bottom: 20px; 
+    left: 200px; 
+    width: 150px;
+    height: 50px;
+    top: 460px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.selectAñoEstudiante{
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    left: 380px;
+    top: 130px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.selectPeriodoEstudiante{
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    left: 380px;
+    top: 230px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.selectCampusEstudiante{
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    left: 380px;
+    top: 330px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}

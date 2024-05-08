@@ -22,7 +22,12 @@ import EditarPlanTrabajo from './pages/EditarPlanTrabajo';
 import CrearActividad from './pages/CrearActividad';
 import VerActividad from './pages/VerActividad';
 import ModificarActividad from './pages/ModificarActividad';
-
+import Consultas from './pages/Consultas';
+import ConsultaEstudiante from './pages/ConsultaEstudiante';
+import ConsultaPlanTrabajo from './pages/ConsultaPlanTrabajo';
+import Comentar from './pages/Comentar';
+import ComentarTexto from './pages/ComentarTexto';
+import ComentarEditar from './pages/ComentarEditar';
 
 function App() {
   return (
@@ -52,6 +57,12 @@ function App() {
           <Route path="/CrearActividad/:id" element={<CrearActividad />} />
           <Route path="/VerActividad/:id" element={<VerActividad />} />
           <Route path="/ModificarActividad/:id" element={<ModificarActividad />} />
+          <Route path="/Consultas" element={<Consultas />} />
+          <Route path="/ConsultaEstudiante" element={<ConsultaEstudiante />} />
+          <Route path="/ConsultaPlanTrabajo" element={<ConsultaPlanTrabajo />} />
+          <Route path="/Comentar" element={<Comentar />} />
+          <Route path="/ComentarTexto" element={<ComentarTexto />} />
+          <Route path="/ComentarEditar" element={<ComentarEditar/>} />
         </Routes>
       </div>
       </BrowserRouter>
