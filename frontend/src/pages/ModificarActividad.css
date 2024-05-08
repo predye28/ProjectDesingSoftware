@@ -1,0 +1,85 @@
+.guardarCambios{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+
+.volverModificarActividad{
+    position: fixed;
+    bottom: 20px; 
+    left: 20px; 
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.aficheModificar{
+    position: absolute;
+    top: 360px;
+    left: 150px;
+}
+
+.selectModificarResponsable{
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    left: 700px;
+    top: 170px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.selectModificarTipo{
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    left: 700px;
+    top: 260px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.selectModificarEstado{
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    left: 700px;
+    top: 350px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.selectModificarVirPre{
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    left: 900px;
+    top: 260px;
+  
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.contenedorModificarDatePicker {
+    position: absolute;
+    top: 450px;
+    left: 150px;
+  }
+  

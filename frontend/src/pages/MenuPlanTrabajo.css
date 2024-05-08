@@ -1,0 +1,38 @@
+
+.tablaPlanes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    position: absolute; /* Cambiado de fixed a absolute */
+    top: 150px; /* Posición desde la parte superior */
+    left: 100px; /* Posición desde la parte izquierda */
+    padding: 4px;
+    width: 70%; /* Reducir el ancho al 50% */
+    height: 50vh; /* Reducir la altura al 50% de la ventana */
+}
+
+.volverMenuPlanTrabajo{
+    position: fixed;
+    bottom: 20px; 
+    left: 20px; 
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.crearPlan{
+    position: fixed;
+    bottom: 20px; 
+    left: 500px; 
+    width: 150px;
+    height: 50px;
+    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
+    border-radius: 20px;
+    color: #FFFFFF;
+    text-align: center;
+}
