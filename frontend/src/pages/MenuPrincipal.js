@@ -25,7 +25,7 @@ function MenuPrincipal() {
   };
   const handleConsultas = () => {
 
-    window.location.href = '/'; 
+    window.location.href = '/Consultas'; 
   };
   return (
     <div>

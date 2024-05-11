@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const personaRoutes = require('./routes/personaRoutes');
 const planesTrabajoRoutes= require('./routes/planesTrabajoRoutes');
 const actividadesRoutes= require('./routes/actividadesRoutes');
+const equiposTrabajoRoutes =  require('./routes/equiposTrabajoRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 app.use('/api/personaRoutes', personaRoutes);
 app.use('/api/planesTrabajoRoutes', planesTrabajoRoutes);
 app.use('/api/actividadesRoutes', actividadesRoutes);
+app.use('/api/equiposTrabajoRoutes', equiposTrabajoRoutes);
 
 mongoose.connect(process.env.MONG_URI)
   .then(() => {

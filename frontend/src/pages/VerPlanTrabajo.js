@@ -104,7 +104,7 @@ function VerPlanTrabajo() {
           </div>
         </div>
 
-        <button className='volverVerPlanTrabajo' onClick={() => window.location.href = '/MenuPlanTrabajo'}>Volver</button>
+        <button className='volverVerPlanTrabajo' onClick={() => window.location.href = '/MenuPrincipal'}>Volver</button>
         <button className='editarPlan' onClick={handleCrearActividad}>Crear Actividad</button>
         <button className='eliminarPlan' onClick={handleEliminarPlanTrabajo}>Eliminar Plan Trabajo</button>
       </div>

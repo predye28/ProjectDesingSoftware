@@ -47,7 +47,7 @@ function App() {
           <Route path="/PersonaEliminar" element={<PersonaEliminar />} />
           <Route path="/MenuEquipoTrabajo" element={<MenuEquipoTrabajo />} />
           <Route path="/EquipoTrabajo" element={<EquipoTrabajo />} />
-          <Route path="/EditarEquipoTrabajo" element={<EditarEquipoTrabajo />} />
+          <Route path="/EditarEquipoTrabajo/:id" element={<EditarEquipoTrabajo />} />
           <Route path="/BuscarEditarEquipo" element={<BuscarEditarEquipo />} />
           <Route path="/Estudiante" element={<Estudiante />} />
           <Route path="/PlanTrabajo" element={<PlanTrabajo />} />

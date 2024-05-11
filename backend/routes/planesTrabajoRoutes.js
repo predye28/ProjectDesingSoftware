@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const PlanTrabajo = require('../models/planTrabajoModel');
 
+
+
 // Obtener todos los planes de trabajo
 router.get('/', async (req, res) => {
     try {

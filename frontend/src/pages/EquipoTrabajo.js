@@ -45,6 +45,8 @@ function EquipoTrabajo() {
   const cargarAños = () => {
     const añoActual = new Date().getFullYear();
     const añosDisponibles = [añoActual, añoActual + 1];
+  
+  //  console.log()
     setAños(añosDisponibles);
   };
 
@@ -171,7 +173,6 @@ function EquipoTrabajo() {
 }
 
 export default EquipoTrabajo;
-
 
 
 

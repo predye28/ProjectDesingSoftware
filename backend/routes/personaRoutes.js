@@ -3,6 +3,8 @@ const router = express.Router();
 const Persona = require('../models/personaModel');
 const EquipoTrabajo = require('../models/equipoTrabajoModel');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+const Mailgen = require('mailgen');
 
 router.post('/auth', async (req, res) => {
   const { correo, contraseña } = req.body;
@@ -27,8 +29,12 @@ router.post('/auth', async (req, res) => {
 });
 
 
-// personaRoutes.js
 
+
+
+
+
+// personaRoutes.js
 router.post('/registro', async (req, res) => {
   try {
     // Validar que todos los campos estén presentes
@@ -77,6 +83,16 @@ router.post('/registro', async (req, res) => {
 
 
 
+router.get('/listar_estudiantes', async(request, response) =>{
+  try{
+      const personas = await Persona.find({});
+
+      return response.json(personas);
+  } catch (error){
+      console.log(error.message);
+      response.status(500).send({message: error.message});
+  }
+});
 
 
 router.get('/:correo/nombre', async (req, res) => {
@@ -207,7 +223,60 @@ router.post('/equipoTrabajo', async (req, res) => {
   }
 });
 
+router.post('/enviar_correo', async (req,res) => {
+  const { email } = req.body;
+  const codigo = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  let config = {
+      service : 'gmail',
+      auth : {
+          user: 'juanemallma@gmail.com',
+          pass: 'oyth mtls wzds qcmr'
+      },
+      tls: {
+          // do not fail on invalid certs
+          rejectUnauthorized: false
+      },
+  }
 
+  let transporter = nodemailer.createTransport(
+          config
+      );
+
+  let MailGenerator = new Mailgen({
+      theme: "salted",
+      product : {
+          name: "Mailgen",
+          link : 'https://mailgen.js/'
+      }
+  })
+
+  let response = {
+      body: {
+          name : "/Hola...",
+          intro: "Su código de verificación es: " + codigo,
+          code: codigo,
+          outro: "Estamos atentos ante cualquier duda. Equipo Guía de Primer Ingreso",
+      }
+  }
+
+  let mail = MailGenerator.generate(response)
+
+  let message = {
+      from : "juanemallma@gmail.com",
+      to : email,
+      subject: "Guia de Primer Ingreso",
+      html: mail
+  }
+
+  transporter.sendMail(message).then(() => {
+      return res.status(201).json({
+          msg: "you should receive an email"
+      })
+  }).catch(error => {
+      return res.status(500).json({ error })
+  })
+
+});
 
 
 router.get('/profesores', async (req, res) => {
