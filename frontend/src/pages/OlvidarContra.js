@@ -19,7 +19,7 @@ function OlvidarContra() {
       const response = await axios.post('/api/personaRoutes/enviar_correo', { email, codigo: code });
  
       console.log('Email sent successfully');
-      alert(`Codigo enviado a ${email} y codigo es ${code}`);
+      alert(`Codigo enviado a ${email}`);
     } catch (error) {
       console.error('Failed to send email', error);
     }
