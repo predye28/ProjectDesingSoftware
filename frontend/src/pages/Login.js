@@ -44,7 +44,7 @@ function Login() {
       <div className='login'>
         <label className='titulo'>EQUIPO GUIA DE PRIMER INGRESO</label>
         <img src={usuario} alt='Usuario' className='imagen-usuario' />
-        <label className='usuarioLabel'>Correo: omar@gmail.com</label>
+        <label className='usuarioLabel'>Correo: </label>
         <input
           className='inputUsuarioLogin'
           type='text'
@@ -52,7 +52,7 @@ function Login() {
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
         />
-        <label className='contrasennaLabel'>Contraseña: 12345678</label>
+        <label className='contrasennaLabel'>Contraseña: </label>
         <input
           className='inputContrasennaLogin'
           type='password'

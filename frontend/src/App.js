@@ -28,6 +28,7 @@ import ConsultaPlanTrabajo from './pages/ConsultaPlanTrabajo';
 import Comentar from './pages/Comentar';
 import ComentarTexto from './pages/ComentarTexto';
 import ComentarEditar from './pages/ComentarEditar';
+import EditarEstudiante from './pages/EditarEstudiante';
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
           <Route path="/Comentar" element={<Comentar />} />
           <Route path="/ComentarTexto" element={<ComentarTexto />} />
           <Route path="/ComentarEditar" element={<ComentarEditar/>} />
+          <Route path="/EditarEstudiante/:id" element={<EditarEstudiante/>} />
         </Routes>
       </div>
       </BrowserRouter>

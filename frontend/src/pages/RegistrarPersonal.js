@@ -122,7 +122,7 @@ function RegistrarPersonal() {
             <option value='AD'>Asistente Administrativo</option>
             <option value='PG'>Profesor Guia</option>
             <option value='PGC'>Profesor Guia Cordinador</option>
-
+            
           </select>
 
           <label>Adjuntar archivo:</label>

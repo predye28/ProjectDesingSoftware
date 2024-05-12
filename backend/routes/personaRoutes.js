@@ -5,6 +5,7 @@ const EquipoTrabajo = require('../models/equipoTrabajoModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
+const mongoose = require('mongoose');
 
 router.post('/auth', async (req, res) => {
   const { correo, contraseña } = req.body;
@@ -39,10 +40,13 @@ router.post('/registro', async (req, res) => {
   try {
     // Validar que todos los campos estén presentes
     const { identificacion, nombre, apellido1, apellido2, celular, correo, contraseña, numeroOficina, sede, tipo } = req.body;
-    console.log(apellido1)
+   
     if (!identificacion || !nombre || !apellido1 || !apellido2 || !celular || !correo || !contraseña || !numeroOficina || !sede || !tipo) {
+      console.log(identificacion);
       return res.status(400).json({ error: 'Por favor complete todos los camposs' });
     }
+
+   
 
     // Verificar si ya existe un usuario con el mismo correo o identificación
     const existeCorreo = await Persona.findOne({ correo });
@@ -130,6 +134,24 @@ router.get('/:identificacion', async (req, res) => {
     const { identificacion } = req.params;
     const persona = await Persona.findOne({ identificacion });
     if (!persona) {
+      console.log('Epapa');
+      return res.status(404).json({ error: 'Persona no encontrada' });
+    }
+    res.json(persona);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/obtener/:identificacion', async (req, res) => {
+  try {
+    const { identificacion } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(identificacion)) {
+      return res.status(404).json({ error: 'Identificacion no valida' });
+    }
+    const persona = await Persona.findOne({ _id: identificacion});
+    if (!persona) {
+      console.log('Epapa');
       return res.status(404).json({ error: 'Persona no encontrada' });
     }
     res.json(persona);
@@ -224,8 +246,8 @@ router.post('/equipoTrabajo', async (req, res) => {
 });
 
 router.post('/enviar_correo', async (req,res) => {
-  const { email } = req.body;
-  const codigo = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  const { email, codigo } = req.body;
+  //const codigo = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
   let config = {
       service : 'gmail',
       auth : {
@@ -269,9 +291,11 @@ router.post('/enviar_correo', async (req,res) => {
   }
 
   transporter.sendMail(message).then(() => {
-      return res.status(201).json({
-          msg: "you should receive an email"
-      })
+    return res.status(201).json({
+        msg: "you should receive an email",
+        codema: codigo
+
+    })
   }).catch(error => {
       return res.status(500).json({ error })
   })

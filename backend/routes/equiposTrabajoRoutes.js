@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const EquipoTrabajo = require('../models/equipoTrabajoModel');
 
@@ -18,19 +19,85 @@ router.get('/', async (request, response) => {
   }
 });
 
-router.get('/:identificacion', async (req, res) => {
+router.get('/listar_equipos', async(request, response) =>{
+  try{
+      const equipos = await EquipoTrabajo.find({});
+
+      return response.json(equipos);
+  } catch (error){
+      console.log(error.message);
+      response.status(500).send({message: error.message});
+  }
+});
+
+
+router.put('/editar_equipo/:identificacion', async (req, res) => {
   try {
-    const { identificacion} = req.params;
-    const equipo = await EquipoTrabajo.findOne({ identificacion });
-    if (!equipo) {
-      return res.status(404).json({ error: 'Persona no encontrada' });
+    const { identificacion } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(identificacion)) {
+      return res.status(404).json({ error: 'Identificacion no valida' });
     }
-    res.json(equipo);
+    const { nombre, integrantes, lider_id, año, semestre } = req.body;
+    const equipoActualizado = await EquipoTrabajo.findOneAndUpdate(
+      { _id: identificacion },
+      { nombre, integrantes, lider_id, año, semestre },
+      { new: true }
+    );
+    res.json(equipoActualizado);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+router.get('/:identificacion', async (req, res) => {
+  try {
+    const { identificacion } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(identificacion)) {
+      return res.status(404).json({ error: 'Identificacion no valida' });
+    }
+
+    const equipo = await EquipoTrabajo.findOne({ _id: identificacion });
+    if (!equipo) {
+      return res.status(404).json({ error: 'Equipo no encontrado' });
+    }
+
+    res.json(equipo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+  /*
+  try {
+    const { identificacion} = req.params;
+    const nombre = 'Germenes';
+    const equipo = await EquipoTrabajo.findOne({ nombre });
+    if (!equipo) {
+      console.log(identificacion);
+      console.log("europapa")
+      return res.status(404).json({ error: 'Persona no encontrada' });
+    }
+
+    res.json(equipo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }*/
+});
+
+
+router.get('obtener_equipo', async (req, res) => {
+  try {
+    const { identificacion} = req.body;
+    const equipo = await EquipoTrabajo.findOne({ identificacion });
+    if (!equipo) {
+      console.log(identificacion);
+      return res.status(404).json({ error: 'Persona no encontrada' });
+    }
+
+    res.json(equipo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.get('/equipos_trabajo/:año/:semestre', async (req, res) => {
 //router.get('/equipos_trabajo', async (req, res) => {

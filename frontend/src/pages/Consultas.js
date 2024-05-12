@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Consultas.css';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
 
 
 function Consultas() {
@@ -12,6 +13,7 @@ function Consultas() {
   const [consultarProfesoresClicked, setConsultarProfesoresClicked] = useState(false);
   const [consultarEstudiantesClicked, setConsultarEstudiantesClicked] = useState(false);
   const [planesTrabajo, setPlanesTrabajo] = useState([]); 
+  const [excelVisible, setExcelVisible] = useState(false); 
   const handleAnioChange = (e) => {
   if (e.target.value !== "") {
     setAnio(e.target.value);
@@ -41,6 +43,7 @@ const handleVolver = () => {
 };
 
 useEffect(() => {
+  /*
   //fetchconsultas();
   if(consultarPlanTrabajoClicked){
         fetch('/api/planesTrabajoRoutes')
@@ -49,17 +52,26 @@ useEffect(() => {
           .catch(error => console.error('Error fetching planes de trabajo:', error));
     }
   else if(consultarProfesoresClicked){
-    fetch('/api/personaRoutes/profesores')
-    .then(response => response.json())
-    .then(data => setconsultas(data))//          .then(data => setPlanesTrabajo(data))
-    .catch(error => console.error('Error fetching planes de trabajo:', error));    
+    fetch('/api/personaRoutes/listar_estudiantes')
+  .then(response => response.json())
+  .then(data => {
+    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    setconsultas(estudiantesFiltrados);
+  })
+  .catch(error => console.error('Error fetching estudiantes:', error));  
   }
   else if(consultarEstudiantesClicked){
     fetch('/api/personaRoutes/listar_estudiantes')
-    .then(response => response.json())
-    .then(data => setconsultas(data))//          .then(data => setPlanesTrabajo(data))
-    .catch(error => console.error('Error fetching planes de trabajo:', error));    
+  .then(response => response.json())
+  .then(data => {
+    const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+    estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    setconsultas(estudiantesFiltrados);
+  })
+  .catch(error => console.error('Error fetching estudiantes:', error));
   }
+  */
 }, [año, semestre, consultarPlanTrabajoClicked]);//año, semestre
 
 const handleConsultarPlanTrabajoClick = () => {
@@ -81,12 +93,70 @@ const handleConsultarEstudiantesClick = () => {
   setConsultarPlanTrabajoClicked(false);
 }
 
+const handleProfesores = () => {
+  fetch('/api/personaRoutes/listar_estudiantes')
+  .then(response => response.json())
+  .then(data => {
+    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    setconsultas(estudiantesFiltrados);
+    setExcelVisible(true); 
+  })
+    .catch(error => console.error('Error fetching estudiantes:', error));  
+}
+
+const handlePlanes = () =>{
+  fetch('/api/planesTrabajoRoutes')
+  .then(response => response.json())
+  .then(data => setconsultas(data))//          .then(data => setPlanesTrabajo(data))
+  .catch(error => console.error('Error fetching planes de trabajo:', error));
+  setExcelVisible(true); 
+}
+
+const handleBuscarAlfa = ()=> {
+  fetch('/api/personaRoutes/listar_estudiantes')
+.then(response => response.json())
+.then(data => {
+  const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+  estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  setconsultas(estudiantesFiltrados);
+  setExcelVisible(true); 
+})
+.catch(error => console.error('Error fetching estudiantes:', error));
+
+}
+
+
+const handleDescargarExcel = () =>{
+  const wb = XLSX.utils.book_new();
+  wb.Props = {
+    Title: "Consultas",
+    Subject: "Consultas Info",
+    Author: "Equipo Guia Primer Ingreso",
+    CreatedDate: new Date()
+  };
+
+  const ws = XLSX.utils.json_to_sheet(consultas);
+  XLSX.utils.book_append_sheet(wb, ws, "Consultas");
+
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
+  const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const url = URL.createObjectURL(data);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "consultas.xlsx";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
   return (
     <div>
       <div className='menuPersona'>
         <label className='titulo'>Consultas</label>
-        <label style = {{position: 'absolute', top: 150, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > Seleccione el año que desea consultar: </label>
-        <label style = {{position: 'absolute', top: 250, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > Seleccione el periodo: </label>
+        <label style = {{position: 'absolute', top: 150, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>{/* Seleccione el año que desea consultar: \n Seleccione el periodo\n*/}
+        <label style = {{position: 'absolute', top: 250, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>
         
 
         {loading ? (
@@ -104,23 +174,30 @@ const handleConsultarEstudiantesClick = () => {
           </ul>
         </div>
       )}
-
+  {/* 
         <select className='selectAño' onChange={handleAnioChange}>
-            <option value="">Selecciona un año</option>
+            <option value="">_</option>
+           
             <option value="2024">2024</option>
             <option value="2025">2025</option>
-
-        </select>
-
+        
+        </select>    
+        */
+          }
+ {/* 
         <select className='selectPeriodo' onChange={handleSemestreChange}>
-            <option value="">Seleccionar Semestre</option>
+            <option value="">_</option>
+           
             <option value="1">Semestre 1</option>
             <option value="2">Semestre 2</option>
-        </select>
+          
+        </select>  */
+          }
         
-        <button className='listaEstudiantes' onClick={handleConsultarEstudiantesClick}>Lista de estudiantes</button>
-        <button className='consultarProfesores' onClick={handleConsultProfesoresClick}>Consultar Profesores</button>
-        <button className='consultarPlanTrabajo' onClick={handleConsultarPlanTrabajoClick}>Consultar Plan de Trabajo</button>
+        <button className='listaEstudiantes' onClick={handleBuscarAlfa}>Lista de estudiantes</button>
+        <button className='consultarProfesores' onClick={handleProfesores}>Consultar Profesores</button>
+        <button className='consultarPlanTrabajo' onClick={handlePlanes}>Consultar Plan de Trabajo</button>
+        {excelVisible && <button className='descargarExcel' onClick={handleDescargarExcel}>Descargar Excel</button>}
         <button className='volverConsultas' onClick={handleVolver}> Volver</button>
       </div>
     </div>

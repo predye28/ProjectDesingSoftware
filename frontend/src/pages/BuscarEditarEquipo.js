@@ -25,8 +25,8 @@ function BuscarEditarEquipo() {
   };
 */
 
-const handleEditar = (equipo) => {
-  window.location.href = `/EditarEquipoTrabajo/${equipo}`;
+const handleEditar = (id) => {
+  window.location.href = `/EditarEquipoTrabajo/${id}`;
 };
 
 
@@ -131,7 +131,7 @@ const fetchEquipos = async () => {
           <ul className='scrollable-list'>
             {equipos.length > 0 ? (
               equipos.map(equipo => (
-                <li key={equipo._id} className='scrollable-list-item pointer-cursor' onClick={() => handleEditar(equipo)}>{equipo.nombre}</li>
+                <li key={equipo._id} className='scrollable-list-item pointer-cursor' onClick={() => handleEditar(equipo._id)}>{equipo.nombre}</li>
               ))
             ) : (
               <li className='scrollable-list-item'>No hay equipos</li>
