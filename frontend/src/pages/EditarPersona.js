@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './EditarPersona.css';
 
 function EditarPersona() {
@@ -17,7 +17,10 @@ function EditarPersona() {
     tipo: ''
   });
 
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+
   const obtenerPersona = useCallback(async () => {
+    console.log(usuario.sede)
     try {
       const response = await fetch(`/api/personaRoutes/${identificacion}`);
       if (!response.ok) {
@@ -111,7 +114,7 @@ function EditarPersona() {
               onChange={(e) => setEdicionPersona({...edicionPersona, tipo: e.target.value})}>
               <option value='AD'>Asistente Administrativo</option>
               <option value='PG'>Profesor Guia</option>
-              <option value='PGC'>Profesor Guia Coordinador</option>
+              {usuario.sede === 'CA' && <option value='PGC'>Profesor Guia Coordinador</option>}
             </select>
             <button className='botonGuardarCambios' onClick={handleGuardarCambios}>Guardar Cambios</button>
           </div>

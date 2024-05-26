@@ -10,7 +10,7 @@ function RegistrarPersonal() {
   const [celular, setCelular] = useState('');
   const [correo, setCorreo] = useState('');
   const [contraseña, setContraseña] = useState('');
-  const [numeroOficina, setNumeroOficina] = useState('');
+  
   const [sede, setSede] = useState('LM');
   const [tipo, setTipo] = useState('');
 
@@ -34,14 +34,12 @@ function RegistrarPersonal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(sede)
-    console.log(tipo)
+
     // Verificar si algún campo está vacío o contiene solo espacios en blanco
-    if (!identificacion.trim() || !nombre.trim() || !apellido1.trim() || !apellido2.trim() || !celular.trim() || !correo.trim() || !contraseña.trim() || !numeroOficina.trim() || !sede.trim() || !tipo.trim()) {
+    if (!identificacion.trim() || !nombre.trim() || !apellido1.trim() || !apellido2.trim() || !celular.trim() || !correo.trim() || !contraseña.trim()  || !sede.trim() || !tipo.trim()) {
       alert('Por favor complete todos los campos');
       return;
     }
-    console.log("adsdad")
     const data = {
       identificacion,
       nombre,
@@ -50,7 +48,6 @@ function RegistrarPersonal() {
       celular,
       correo,
       contraseña, 
-      numeroOficina,
       sede,
       tipo
     };
@@ -105,8 +102,6 @@ function RegistrarPersonal() {
           <label>Contraseña:</label>
           <input type='password' value={contraseña} onChange={(e) => setContraseña(e.target.value)} />
 
-          <label>Número de oficina:</label>
-          <input type='text' value={numeroOficina} onChange={(e) => setNumeroOficina(e.target.value)} />
 
           <label>Sede:</label>
           <select value={sede} onChange={(e) => setSede(e.target.value)}>
@@ -121,7 +116,6 @@ function RegistrarPersonal() {
           <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
             <option value='AD'>Asistente Administrativo</option>
             <option value='PG'>Profesor Guia</option>
-            <option value='PGC'>Profesor Guia Cordinador</option>
             
           </select>
 

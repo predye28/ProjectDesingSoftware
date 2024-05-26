@@ -9,7 +9,9 @@ const personaSchema = mongoose.Schema({
   contraseña: { type: String, required: true },
   celular: { type: String, required: true },
   sede: { type: String, required: true },
-  tipo: { type: String, required: true }
+  tipo: { type: String, required: true },
+  codigo: { type: String, required: false },
+  carne: { type: String, required: false }
 });
 
 module.exports = mongoose.model('Persona', personaSchema);

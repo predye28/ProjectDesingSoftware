@@ -7,8 +7,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 function ModificarActividad() {
   const { id } = useParams();
   const [actividad, setActividad] = useState(null);
+  const [numeroSemana, setNumeroSemana] = useState('');
   const [nombre, setNombre] = useState('');
-  const [fecha, setFecha] = useState(null);
+  const [fechaHoraProgramada, setFechaHoraProgramada] = useState(null);
+  const [cantDiasPreviosAnunciar, setCantDiasPreviosAnunciar] = useState('');
+  const [cantDiasPreviosRecordar, setCantDiasPreviosRecordar] = useState('');
+  const [modalidad, setModalidad] = useState('');
+  const [linkDeReunion, setLinkDeReunion] = useState('');
   const [tipoActividad, setTipoActividad] = useState('');
   const [estadoActividad, setEstadoActividad] = useState('');
 
@@ -26,8 +31,13 @@ function ModificarActividad() {
         }
         const data = await response.json();
         setActividad(data);
+        setNumeroSemana(data.numeroSemana);
         setNombre(data.nombre);
-        setFecha(new Date(data.fecha));
+        setFechaHoraProgramada(new Date(data.fechaHoraProgramada));
+        setCantDiasPreviosAnunciar(data.cantDiasPreviosAnunciar);
+        setCantDiasPreviosRecordar(data.cantDiasPreviosRecordar);
+        setModalidad(data.modalidad);
+        setLinkDeReunion(data.linkDeReunion);
         setTipoActividad(data.tipoActividad);
         setEstadoActividad(data.estadoActividad);
       } catch (error) {
@@ -47,8 +57,13 @@ function ModificarActividad() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          numeroSemana,
           nombre,
-          fecha,
+          fechaHoraProgramada,
+          cantDiasPreviosAnunciar,
+          cantDiasPreviosRecordar,
+          modalidad,
+          linkDeReunion,
           tipoActividad,
           estadoActividad
         })
@@ -75,31 +90,72 @@ function ModificarActividad() {
         <label className='titulo'>Modificar Actividad</label>
         {actividad ? (
           <div>
-            <label style={{ position: 'absolute', top: 180, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Nombre:</label>
+            <label className='label'>Semana:</label>
             <input
-              style={{ position: 'absolute', top: 180, left: 150, fontSize: 20 }}
+              className='input'
+              value={numeroSemana}
+              onChange={(e) => setNumeroSemana(e.target.value)}
+            />
+            <label className='label'>Nombre:</label>
+            <input
+              className='input'
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
             />
-            <label style={{ position: 'absolute', top: 450, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha:</label>
+            <label className='label'>Fecha y Hora programada:</label>
             <DatePicker
-              selected={fecha}
-              onChange={(date) => setFecha(date)}
-              dateFormat="dd/MM/yyyy"
-              style={{ fontSize: 20 }}
+              className='input'
+              selected={fechaHoraProgramada}
+              onChange={(date) => setFechaHoraProgramada(date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="dd/MM/yyyy HH:mm"
             />
-            <label style={{ position: 'absolute', top: 360, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Tipo:</label>
+            <label className='label'>Días Previos Anunciar:</label>
+            <input
+              className='input'
+              type='number'
+              value={cantDiasPreviosAnunciar}
+              onChange={(e) => setCantDiasPreviosAnunciar(e.target.value)}
+            />
+            <label className='label'>Días Previos Recordar:</label>
+            <input
+              className='input'
+              type='number'
+              value={cantDiasPreviosRecordar}
+              onChange={(e) => setCantDiasPreviosRecordar(e.target.value)}
+            />
+            <label className='label'>Modalidad:</label>
             <select
-              className='selectTipo'
-              value={tipoActividad}
-              onChange={(e) => setTipoActividad(e.target.value)}
+              className='select'
+              value={modalidad}
+              onChange={(e) => setModalidad(e.target.value)}
             >
               <option value="Remota">Remota</option>
               <option value="Presencial">Presencial</option>
             </select>
-            <label style={{ position: 'absolute', top: 450, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estado:</label>
+            <label className='label'>Link de Reunión:</label>
+            <input
+              className='input'
+              value={linkDeReunion}
+              onChange={(e) => setLinkDeReunion(e.target.value)}
+            />
+            <label className='label'>Tipo:</label>
             <select
-              className='selectEstado'
+              className='select'
+              value={tipoActividad}
+              onChange={(e) => setTipoActividad(e.target.value)}
+            >
+              <option value="Orientadora">Orientadora</option>
+              <option value="Motivacional">Motivacional</option>
+              <option value="ApoyoEstudiantil">Apoyo a la vida estudiantil</option>
+              <option value="Tecnica">Tecnica</option>
+              <option value="Recreacional">Recreacional</option>
+            </select>
+            <label className='label'>Estado:</label>
+            <select
+              className='select'
               value={estadoActividad}
               onChange={(e) => setEstadoActividad(e.target.value)}
             >
@@ -112,8 +168,8 @@ function ModificarActividad() {
         ) : (
           <p>Cargando información de la actividad...</p>
         )}
-        <button className='volverModificarActividad' onClick={handleVolver}>Volver</button>
-        <button className='guardarCambios' onClick={handleGuardarCambios}>Guardar Cambios</button>
+        <button className='button' onClick={handleVolver}>Volver</button>
+        <button className='button' onClick={handleGuardarCambios}>Guardar Cambios</button>
       </div>
     </div>
   );

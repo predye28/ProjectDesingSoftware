@@ -4,6 +4,10 @@ import './MenuPlanTrabajo.css';
 function MenuPlanTrabajo() {
   const [planesTrabajo, setPlanesTrabajo] = useState([]);
 
+  // Obtener el tipo de usuario desde localStorage
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo } = usuario;
+
   useEffect(() => {
     fetch('/api/planesTrabajoRoutes')
       .then(response => response.json())
@@ -12,11 +16,15 @@ function MenuPlanTrabajo() {
   }, []);
 
   const handleVolver = () => {
-    window.location.href = '/MenuPrincipal'; 
+    window.location.href = '/MenuPrincipal';
   };
 
   const handleCrearPlanTrabajo = () => {
-    window.location.href = '/PlanTrabajo'; 
+    if (tipo === 'PGC') {
+      window.location.href = '/PlanTrabajo';
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede acceder a este botón.');
+    }
   };
 
   const handleVerPlanTrabajo = (id) => {

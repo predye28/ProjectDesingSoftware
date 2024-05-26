@@ -4,42 +4,60 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function CrearActividad() {
+  const [numeroSemana, setNumeroSemana] = useState('');
   const [nombre, setNombre] = useState('');
-  const [fecha, setFecha] = useState(null);
   const [tipoActividad, setTipoActividad] = useState('Remota');
+  const [fechaHoraProgramada, setFechaHoraProgramada] = useState(null);
+  const [cantDiasPreviosAnunciar, setCantDiasPreviosAnunciar] = useState('');
+  const [cantDiasPreviosRecordar, setCantDiasPreviosRecordar] = useState('');
+  const [modalidad, setModalidad] = useState('Online');
+  const [linkDeReunion, setLinkDeReunion] = useState('');
   const [estadoActividad, setEstadoActividad] = useState('Planeada');
 
   const handleVolver = () => {
-    // Extraer el ID del plan de trabajo de la URL actual
     const urlParts = window.location.href.split('/');
     const idPlanTrabajo = urlParts[urlParts.length - 1];
-    
-    // Redirigir al usuario a la página anterior con el ID del plan de trabajo
     window.location.href = `/VerPlanTrabajo/${idPlanTrabajo}`;
   };
 
   const handleRegistrarActividad = async () => {
-    // Validar que todos los campos estén llenos
-    if (!nombre || !fecha || !tipoActividad || !estadoActividad) {
-      alert('Por favor complete todos los campos.');
+    if (!numeroSemana || !nombre || !fechaHoraProgramada || !cantDiasPreviosAnunciar || !cantDiasPreviosRecordar || !modalidad || !estadoActividad) {
+      alert('Por favor complete todos los campos requeridos.');
+      return;
+    }
+
+    const numeroSemanaInt = parseInt(numeroSemana);
+    const cantDiasAnunciarInt = parseInt(cantDiasPreviosAnunciar);
+    const cantDiasRecordarInt = parseInt(cantDiasPreviosRecordar);
+
+    if (isNaN(numeroSemanaInt) || numeroSemanaInt < 1 || numeroSemanaInt > 18) {
+      alert('El número de semana debe ser un número entre 1 y 18.');
+      return;
+    }
+
+    if (isNaN(cantDiasAnunciarInt) || isNaN(cantDiasRecordarInt)) {
+      alert('Los días previos a anunciar y a recordar deben ser números.');
       return;
     }
 
     try {
-      // Extraer el ID del plan de trabajo de la URL actual
       const urlParts = window.location.href.split('/');
       const idPlanTrabajo = urlParts[urlParts.length - 1];
       
-      // Realizar la solicitud para crear una nueva actividad
       const response = await fetch(`/api/actividadesRoutes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          numeroSemana: numeroSemanaInt,
           nombre,
-          fecha,
           tipoActividad,
+          fechaHoraProgramada,
+          cantDiasPreviosAnunciar: cantDiasAnunciarInt,
+          cantDiasPreviosRecordar: cantDiasRecordarInt,
+          modalidad,
+          linkDeReunion,
           estadoActividad,
           planTrabajo_id: idPlanTrabajo
         })
@@ -49,11 +67,9 @@ function CrearActividad() {
         throw new Error('Error al registrar la actividad.');
       }
 
-      // Redirigir al usuario a la página de ver plan de trabajo con el ID del plan de trabajo
       window.location.href = `/VerPlanTrabajo/${idPlanTrabajo}`;
     } catch (error) {
       console.error('Error al registrar la actividad:', error);
-      // Manejar el error según tu lógica
     }
   };
 
@@ -61,39 +77,88 @@ function CrearActividad() {
     <div>
       <div className='menuPersona'>
         <label className='titulo'>Crear Actividad</label>
-        <label style={{ position: 'absolute', top: 180, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Nombre: </label>
-
-        <label style={{ position: 'absolute', top: 450, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Fecha: </label>
-
-        <label style={{ position: 'absolute', top: 360, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Tipo: </label>
-        <label style={{ position: 'absolute', top: 450, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Estado: </label>
-
+        
+        <label className='label'>Semana:</label>
         <input
-          style={{ position: 'absolute', top: 180, left: 150, fontSize: 20 }}
+          className='input'
+          value={numeroSemana}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= 18)) {
+              setNumeroSemana(value);
+            } else {
+              alert('El número de semana debe ser un número entre 1 y 18.');
+            }
+          }}
+        />
+
+        <label className='label'>Nombre:</label>
+        <input
+          className='input'
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
 
-        <div className='contenedorDatePicker'>
-          <DatePicker
-            selected={fecha}
-            onChange={(date) => setFecha(date)}
-            dateFormat="dd/MM/yyyy"
-            style={{ fontSize: 20 }}
-          />
-        </div>
+        <label className='label'>Fecha y Hora programada:</label>
+        <DatePicker
+          className='input'
+          selected={fechaHoraProgramada}
+          onChange={(date) => setFechaHoraProgramada(date)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="dd/MM/yyyy HH:mm"
+        />
 
+        <label className='label'>Días Previos Anunciar:</label>
+        <input
+          className='input'
+          type='number'
+          value={cantDiasPreviosAnunciar}
+          onChange={(e) => setCantDiasPreviosAnunciar(e.target.value)}
+        />
+
+        <label className='label'>Días Previos Recordar:</label>
+        <input
+          className='input'
+          type='number'
+          value={cantDiasPreviosRecordar}
+          onChange={(e) => setCantDiasPreviosRecordar(e.target.value)}
+        />
+
+        <label className='label'>Modalidad:</label>
         <select
-          className='selectTipo'
-          value={tipoActividad}
-          onChange={(e) => setTipoActividad(e.target.value)}
+          className='select'
+          value={modalidad}
+          onChange={(e) => setModalidad(e.target.value)}
         >
           <option value="Remota">Remota</option>
           <option value="Presencial">Presencial</option>
         </select>
 
+        <label className='label'>Link de Reunión (opcional):</label>
+        <input
+          className='input'
+          value={linkDeReunion}
+          onChange={(e) => setLinkDeReunion(e.target.value)}
+        />
+
+        <label className='label'>Tipo:</label>
         <select
-          className='selectEstado'
+          className='select'
+          value={tipoActividad}
+          onChange={(e) => setTipoActividad(e.target.value)}
+        >
+          <option value="Orientadora">Orientadora</option>
+          <option value="Motivacional">Motivacional</option>
+          <option value="ApoyoEstudiantil">Apoyo a la vida estudiantil</option>
+          <option value="Tecnica">Tecnica</option>
+          <option value="Recreacional">Recreacional</option>
+        </select>
+
+        <label className='label'>Estado:</label>
+        <select
+          className='select'
           value={estadoActividad}
           onChange={(e) => setEstadoActividad(e.target.value)}
         >
@@ -103,12 +168,11 @@ function CrearActividad() {
           <option value="Cancelada">Cancelada</option>
         </select>
 
-        <button className='registrarActividad' onClick={handleRegistrarActividad}>Registrar Actividad</button>
-        <button className='volverCrearActividad' onClick={handleVolver}>Volver</button>
+        <button className='button' onClick={handleRegistrarActividad}>Registrar Actividad</button>
+        <button className='button' onClick={handleVolver}>Volver</button>
       </div>
     </div>
   );
 }
 
 export default CrearActividad;
-

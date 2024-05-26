@@ -32,9 +32,9 @@ function VerActividad() {
   }, [id]);
 
   const handleVolver = () => {
-    // Redirigir al usuario a la página anterior
     window.history.back();
   };
+
   const handleEliminarActividad = async () => {
     try {
       const response = await fetch(`/api/actividadesRoutes/${id}`, {
@@ -46,46 +46,75 @@ function VerActividad() {
       if (!response.ok) {
         throw new Error('Error al eliminar la actividad');
       }
-      // Redirigir al usuario a la página anterior o a la página de inicio
       window.history.back();
     } catch (error) {
       console.error('Error al eliminar la actividad:', error);
       // Manejar el error según tu lógica
     }
   };
+
   const handleModificarActividad = () => {
-    // Redirigir al usuario a la página de modificar actividad con el ID de la actividad
     window.location.href = `/ModificarActividad/${id}`;
   };
+
   return (
     <div>
       <div className='menuPersona'>
         <label className='titulo'>Ver Actividad</label>
         {actividad ? (
           <div>
-            <label style={{ position: 'absolute', top: 180, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Nombre:</label>
+            <label className='label'>Semana:</label>
             <input
-              style={{ position: 'absolute', top: 180, left: 150, fontSize: 20 }}
+              className='input'
+              value={actividad.numeroSemana}
+              readOnly
+            />
+            <label className='label'>Nombre:</label>
+            <input
+              className='input'
               value={actividad.nombre}
               readOnly
             />
-            <label style={{ position: 'absolute', top: 450, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha:</label>
+            <label className='label'>Fecha y Hora programada:</label>
             <DatePicker
-              selected={new Date(actividad.fecha)}
-              onChange={(date) => {}}
-              dateFormat="dd/MM/yyyy"
-              style={{ fontSize: 20 }}
+              className='input'
+              selected={new Date(actividad.fechaHoraProgramada)}
+              dateFormat="dd/MM/yyyy HH:mm"
               readOnly
             />
-            <label style={{ position: 'absolute', top: 360, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Tipo:</label>
+            <label className='label'>Días Previos Anunciar:</label>
             <input
-              style={{ position: 'absolute', top: 360, left: 600, fontSize: 20 }}
+              className='input'
+              value={actividad.cantDiasPreviosAnunciar}
+              readOnly
+            />
+            <label className='label'>Días Previos Recordar:</label>
+            <input
+              className='input'
+              value={actividad.cantDiasPreviosRecordar}
+              readOnly
+            />
+            <label className='label'>Modalidad:</label>
+            <input
+              className='input'
+              value={actividad.modalidad}
+              readOnly
+            />
+            <label className='label'>Link de Reunión:</label>
+            <input
+              className='input'
+              value={actividad.linkDeReunion}
+              readOnly
+            />
+            <label className='label'>Tipo:</label>
+            <input
+              className='input'
               value={actividad.tipoActividad}
               readOnly
             />
-            <label style={{ position: 'absolute', top: 450, left: 500, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Estado:</label>
+            <label className='label'>Estado:</label>
             <input
-              style={{ position: 'absolute', top: 450, left: 600, fontSize: 20 }}
+              className='input'
               value={actividad.estadoActividad}
               readOnly
             />
@@ -95,7 +124,7 @@ function VerActividad() {
         )}
         <button className='volverVerActividad' onClick={handleVolver}>Volver</button>
         <button className='comentarActividad'>Comentar Actividad</button>
-        <button className='eliminarActividad'  onClick={handleEliminarActividad}>Eliminar Actividad</button>
+        <button className='eliminarActividad' onClick={handleEliminarActividad}>Eliminar Actividad</button>
         <button className='modificarActividad' onClick={handleModificarActividad}>Modificar Actividad</button>
       </div>
     </div>

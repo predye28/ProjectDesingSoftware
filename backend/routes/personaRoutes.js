@@ -23,26 +23,24 @@ router.post('/auth', async (req, res) => {
     }
 
     // Autenticación exitosa
-    res.status(200).json({ message: 'Autenticación exitosa' });
+    res.status(200).json({
+      message: 'Autenticación exitosa',
+      sede: usuario.sede,
+      tipo: usuario.tipo,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message  });
   }
 });
 
 
-
-
-
-
-
 // personaRoutes.js
 router.post('/registro', async (req, res) => {
   try {
     // Validar que todos los campos estén presentes
-    const { identificacion, nombre, apellido1, apellido2, celular, correo, contraseña, numeroOficina, sede, tipo } = req.body;
+    const { identificacion, nombre, apellido1, apellido2, celular, correo, contraseña, sede, tipo } = req.body;
    
-    if (!identificacion || !nombre || !apellido1 || !apellido2 || !celular || !correo || !contraseña || !numeroOficina || !sede || !tipo) {
-      console.log(identificacion);
+    if (!identificacion || !nombre || !apellido1 || !apellido2 || !celular || !correo || !contraseña || !sede || !tipo) {
       return res.status(400).json({ error: 'Por favor complete todos los camposs' });
     }
 
@@ -71,7 +69,6 @@ router.post('/registro', async (req, res) => {
       celular,
       correo,
       contraseña: hashedPassword, // Guardar la contraseña hasheada
-      numeroOficina,
       sede,
       tipo
     });

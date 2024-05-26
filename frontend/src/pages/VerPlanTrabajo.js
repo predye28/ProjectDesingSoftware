@@ -7,6 +7,10 @@ function VerPlanTrabajo() {
   const [planTrabajo, setPlanTrabajo] = useState(null);
   const [actividades, setActividades] = useState([]);
 
+  // Obtener el tipo de usuario desde localStorage
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo } = usuario;
+
   useEffect(() => {
     const fetchPlanTrabajo = async () => {
       try {
@@ -44,32 +48,40 @@ function VerPlanTrabajo() {
   }, [id]);
 
   const handleEliminarPlanTrabajo = async () => {
-    try {
-      const response = await fetch(`/api/planesTrabajoRoutes/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
+    if (tipo === 'PGC') {
+      try {
+        const response = await fetch(`/api/planesTrabajoRoutes/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Error al eliminar el plan de trabajo');
         }
-      });
-      if (!response.ok) {
-        throw new Error('Error al eliminar el plan de trabajo');
+        // Redirigir al usuario de regreso al menú de planes de trabajo
+        window.location.href = '/MenuPlanTrabajo';
+      } catch (error) {
+        console.error('Error al eliminar el plan de trabajo:', error);
+        // Manejar el error según tu lógica
       }
-      // Redirigir al usuario de regreso al menú de planes de trabajo
-      window.location.href = '/MenuPlanTrabajo';
-    } catch (error) {
-      console.error('Error al eliminar el plan de trabajo:', error);
-      // Manejar el error según tu lógica
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
+    }
+  };
+
+  const handleCrearActividad = () => {
+    if (tipo === 'PGC') {
+      // Redirigir al usuario a la página de creación de actividad con el ID del plan de trabajo
+      window.location.href = `/CrearActividad/${id}`;
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
     }
   };
 
   const handleVerActividad = (idActividad) => {
     // Redirigir al usuario a la página de visualización de la actividad con el ID de la actividad
     window.location.href = `/VerActividad/${idActividad}`;
-  };
-
-  const handleCrearActividad = () => {
-    // Redirigir al usuario a la página de creación de actividad con el ID del plan de trabajo
-    window.location.href = `/CrearActividad/${id}`;
   };
 
   return (
