@@ -28,6 +28,7 @@ function MenuPrincipal() {
     ],
     PG: [
       { label: 'Plan de Trabajo', onClick: navigationHandlers.handlePlanTrabajo, className: 'planTrabajo' },
+      { label: 'Consultas', onClick: navigationHandlers.handleConsultas, className: 'consultas' }
     ],
     PGC: [
       { label: 'Consultas', onClick: navigationHandlers.handleConsultas, className: 'consultas' },

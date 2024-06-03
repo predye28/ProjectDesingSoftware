@@ -182,6 +182,19 @@ router.get('/:correo/id', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get('/:correo/sede', async (req, res) => {
+  try {
+    const { correo } = req.params;
+    const persona = await Persona.findOne({ correo }, 'sede'); // Changed to return 'sede'
+    if (!persona) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ sede: persona.sede });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 /////////////////////////////////////////////////////
 
 

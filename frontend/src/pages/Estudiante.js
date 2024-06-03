@@ -28,20 +28,6 @@ function Estudiante() {
 
 
   const handleBuscarAlfa = ()=> {
-    /*
-    fetch('/api/personaRoutes/listar_estudiantes')
-    .then(response => response.json())
-    .then(data => setestudiantes(data))//          .then(data => setPlanesTrabajo(data))
-    .catch(error => console.error('Error fetching planes de trabajo:', error));    
-  */
- /*
-    fetch('/api/personaRoutes/listar_estudiantes')
-    .then(response => response.json())
-    .then(data => {
-      const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
-      setestudiantes(estudiantesFiltrados);
-    })
-    .catch(error => console.error('Error fetching estudiantes:', error));*/
     fetch('/api/personaRoutes/listar_estudiantes')
   .then(response => response.json())
   .then(data => {

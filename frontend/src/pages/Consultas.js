@@ -5,8 +5,14 @@ import * as XLSX from 'xlsx';
 
 
 function Consultas() {
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo, correo} = usuario;
+
+
+  const [nombrePersona, setNombrePersona] = useState('');
   const [año, setAnio] = useState('');
   const [semestre, setSemestre] = useState('');
+  const [sede, setSede] = useState('');
   const [consultas, setconsultas] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [consultarPlanTrabajoClicked, setConsultarPlanTrabajoClicked] = useState(false);
@@ -34,7 +40,8 @@ const handleEditar = (equipo) => {
     window.location.href = `/EditarPersona/${equipo._id}`;
   }
   else if(consultarEstudiantesClicked){
-    window.location.href = `/EditarPersona/${equipo.identificacion}`;
+    window.location.href = `/EditarEstudiante/${equipo.identificacion}`;
+    //window.location.href = `/EditarPersona/${equipo.identificacion}`;
   }
 };
 
@@ -72,7 +79,15 @@ useEffect(() => {
   .catch(error => console.error('Error fetching estudiantes:', error));
   }
   */
-}, [año, semestre, consultarPlanTrabajoClicked]);//año, semestre
+  fetch(`/api/personaRoutes/${correo}/sede`)
+  .then(response => response.json())
+  .then(data => {
+    setSede(data.sede); // Set the user's sede
+   // fetchStudentsBySede(data.sede); // Fetch students once we have the 'sede'
+  })
+  .catch(error => console.error('Error fetching sede:', error));
+
+}, [correo]);//año, semestre
 
 const handleConsultarPlanTrabajoClick = () => {
   setConsultarPlanTrabajoClicked(true);
@@ -93,11 +108,15 @@ const handleConsultarEstudiantesClick = () => {
   setConsultarPlanTrabajoClicked(false);
 }
 
+
+
 const handleProfesores = () => {
+  handleConsultProfesoresClick();
   fetch('/api/personaRoutes/listar_estudiantes')
   .then(response => response.json())
   .then(data => {
-    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    //const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "PG" && estudiante.sede === sede));
     estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
     setconsultas(estudiantesFiltrados);
     setExcelVisible(true); 
@@ -106,6 +125,7 @@ const handleProfesores = () => {
 }
 
 const handlePlanes = () =>{
+  handleConsultarPlanTrabajoClick();
   fetch('/api/planesTrabajoRoutes')
   .then(response => response.json())
   .then(data => setconsultas(data))//          .then(data => setPlanesTrabajo(data))
@@ -114,10 +134,13 @@ const handlePlanes = () =>{
 }
 
 const handleBuscarAlfa = ()=> {
+  handleConsultarEstudiantesClick();
+    // Hacer una solicitud al servidor para obtener el nombre de la persona asociada con el correo electrónico
   fetch('/api/personaRoutes/listar_estudiantes')
 .then(response => response.json())
 .then(data => {
-  const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+  //const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+  const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES" && estudiante.sede === sede);
   estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
   setconsultas(estudiantesFiltrados);
   setExcelVisible(true); 
@@ -126,6 +149,21 @@ const handleBuscarAlfa = ()=> {
 
 }
 
+
+ const handleBuscarESTodos = () => {
+  handleConsultarEstudiantesClick();
+  fetch('/api/personaRoutes/listar_estudiantes')
+  .then(response => response.json())
+  .then(data => {
+    //const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+    const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+    estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    setconsultas(estudiantesFiltrados);
+    setExcelVisible(true); 
+  })
+  .catch(error => console.error('Error fetching estudiantes:', error));
+  
+ }
 
 const handleDescargarExcel = () =>{
   const wb = XLSX.utils.book_new();
@@ -150,6 +188,26 @@ const handleDescargarExcel = () =>{
   link.click();
   document.body.removeChild(link);
 }
+
+  const buttonsConfig = {
+    AD: [
+      //{ label: 'Consultar Plan de Trabajo', onClick: handlePlanes, className: 'consultarPlanTrabajo' },
+      { label: 'Consultar Profesores', onClick: handleProfesores, className: 'consultarProfesores' },
+      { label: 'Lista de Estudiantes', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+    PG: [
+      { label: 'Consultar Plan de Trabajo', onClick: handlePlanes, className: 'consultarPlanTrabajo' },
+      { label: 'Listar todos los Estudiantes', onClick: handleBuscarESTodos, className: 'listaEstudiantesTodos' },
+      { label: 'Lista Estudiantes x Sede', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+    PGC: [
+      { label: 'Consultar Profesores', onClick: handleProfesores, className: 'consultarProfesores' },
+      { label: 'Lista de Estudiantes', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+  };
+
+  const buttons = buttonsConfig[tipo] || []
+
 
   return (
     <div>
@@ -194,9 +252,20 @@ const handleDescargarExcel = () =>{
         </select>  */
           }
         
+        {buttons.map((button, index) => (
+          <button key={index} className={button.className} onClick={button.onClick}>
+            {button.label}
+          </button>
+        ))}
+        {/* 
         <button className='listaEstudiantes' onClick={handleBuscarAlfa}>Lista de estudiantes</button>
-        <button className='consultarProfesores' onClick={handleProfesores}>Consultar Profesores</button>
-        <button className='consultarPlanTrabajo' onClick={handlePlanes}>Consultar Plan de Trabajo</button>
+      
+        
+        <button className='consultarProfesores' onClick={handleProfesores}>Consultar Profesores Guías</button>
+        */}
+          {/*
+        <button className='consultarPlanTrabajo' onClick={handlePlanes}>Consultar Plan de Trabajo</button>*/}
+         
         {excelVisible && <button className='descargarExcel' onClick={handleDescargarExcel}>Descargar Excel</button>}
         <button className='volverConsultas' onClick={handleVolver}> Volver</button>
       </div>
