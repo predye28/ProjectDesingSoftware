@@ -1,3 +1,5 @@
+// ModificarActividad.js
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ModificarActividad.css';
@@ -87,83 +89,105 @@ function ModificarActividad() {
   return (
     <div>
       <div className='menuPersona'>
-        <label className='titulo'>Modificar Actividad</label>
+        <label className='title'>Modificar Actividad</label>
         {actividad ? (
-          <div>
-            <label className='label'>Semana:</label>
-            <input
-              className='input'
-              value={numeroSemana}
-              onChange={(e) => setNumeroSemana(e.target.value)}
-            />
-            <label className='label'>Nombre:</label>
-            <input
-              className='input'
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-            />
-            <label className='label'>Fecha y Hora programada:</label>
-            <DatePicker
-              className='input'
-              selected={fechaHoraProgramada}
-              onChange={(date) => setFechaHoraProgramada(date)}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="dd/MM/yyyy HH:mm"
-            />
-            <label className='label'>Días Previos Anunciar:</label>
-            <input
-              className='input'
-              type='number'
-              value={cantDiasPreviosAnunciar}
-              onChange={(e) => setCantDiasPreviosAnunciar(e.target.value)}
-            />
-            <label className='label'>Días Previos Recordar:</label>
-            <input
-              className='input'
-              type='number'
-              value={cantDiasPreviosRecordar}
-              onChange={(e) => setCantDiasPreviosRecordar(e.target.value)}
-            />
-            <label className='label'>Modalidad:</label>
-            <select
-              className='select'
-              value={modalidad}
-              onChange={(e) => setModalidad(e.target.value)}
-            >
-              <option value="Remota">Remota</option>
-              <option value="Presencial">Presencial</option>
-            </select>
-            <label className='label'>Link de Reunión:</label>
-            <input
-              className='input'
-              value={linkDeReunion}
-              onChange={(e) => setLinkDeReunion(e.target.value)}
-            />
-            <label className='label'>Tipo:</label>
-            <select
-              className='select'
-              value={tipoActividad}
-              onChange={(e) => setTipoActividad(e.target.value)}
-            >
-              <option value="Orientadora">Orientadora</option>
-              <option value="Motivacional">Motivacional</option>
-              <option value="ApoyoEstudiantil">Apoyo a la vida estudiantil</option>
-              <option value="Tecnica">Tecnica</option>
-              <option value="Recreacional">Recreacional</option>
-            </select>
-            <label className='label'>Estado:</label>
-            <select
-              className='select'
-              value={estadoActividad}
-              onChange={(e) => setEstadoActividad(e.target.value)}
-            >
-              <option value="Planeada">Planeada</option>
-              <option value="Notificada">Notificada</option>
-              <option value="Realizada">Realizada</option>
-              <option value="Cancelada">Cancelada</option>
-            </select>
+          <div className="actividadDetailsContainer">
+            <div className="actividadCard">
+              <div className='actividadDetails'>
+                <label className='label'>Semana:</label>
+                <input
+                  className='input'
+                  value={numeroSemana}
+                  onChange={(e) => setNumeroSemana(e.target.value)}
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Nombre:</label>
+                <input
+                  className='input'
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Fecha y Hora programada:</label>
+                <DatePicker
+                  className='input'
+                  selected={fechaHoraProgramada}
+                  onChange={(date) => setFechaHoraProgramada(date)}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  dateFormat="dd/MM/yyyy HH:mm"
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Días Previos Anunciar:</label>
+                <input
+                  className='input'
+                  type='number'
+                  value={cantDiasPreviosAnunciar}
+                  onChange={(e) => setCantDiasPreviosAnunciar(e.target.value)}
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Días Previos Recordar:</label>
+                <input
+                  className='input'
+                  type='number'
+                  value={cantDiasPreviosRecordar}
+                  onChange={(e) => setCantDiasPreviosRecordar(e.target.value)}
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Modalidad:</label>
+                <select
+                  className='select'
+                  value={modalidad}
+                  onChange={(e) => setModalidad(e.target.value)}
+                >
+                  <option value="Remota">Remota</option>
+                  <option value="Presencial">Presencial</option>
+                </select>
+              </div>
+            </div>
+            <div className="actividadCard">
+              <div className='actividadDetails'>
+                <label className='label'>Link de Reunión:</label>
+                <input
+                  className='input'
+                  value={linkDeReunion}
+                  onChange={(e) => setLinkDeReunion(e.target.value)}
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Tipo:</label>
+                <select
+                  className='select'
+                  value={tipoActividad}
+                  onChange={(e) => setTipoActividad(e.target.value)}
+                >
+                  <option value="Orientadora">Orientadora</option>
+                  <option value="Motivacional">Motivacional</option>
+                  <option value="ApoyoEstudiantil">Apoyo a la vida estudiantil</option>
+                  <option value="Tecnica">Tecnica</option>
+                  <option value="Recreacional">Recreacional</option>
+                </select>
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Estado:</label>
+                <select
+                  className='select'
+                  value={estadoActividad}
+                  onChange={(e) => setEstadoActividad(e.target.value)}
+                >
+                  <option value="Planeada">Planeada</option>
+                  <option value="Notificada">Notificada</option>
+                  <option value="Realizada">Realizada</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
+              </div>
+            </div>
           </div>
         ) : (
           <p>Cargando información de la actividad...</p>

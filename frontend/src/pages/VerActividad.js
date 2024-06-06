@@ -1,3 +1,5 @@
+// VerActividad.js
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './VerActividad.css';
@@ -60,64 +62,84 @@ function VerActividad() {
   return (
     <div>
       <div className='menuPersona'>
-        <label className='titulo'>Ver Actividad</label>
+        <label className='title'>Actividad</label>
         {actividad ? (
-          <div>
-            <label className='label'>Semana:</label>
-            <input
-              className='input'
-              value={actividad.numeroSemana}
-              readOnly
-            />
-            <label className='label'>Nombre:</label>
-            <input
-              className='input'
-              value={actividad.nombre}
-              readOnly
-            />
-            <label className='label'>Fecha y Hora programada:</label>
-            <DatePicker
-              className='input'
-              selected={new Date(actividad.fechaHoraProgramada)}
-              dateFormat="dd/MM/yyyy HH:mm"
-              readOnly
-            />
-            <label className='label'>Días Previos Anunciar:</label>
-            <input
-              className='input'
-              value={actividad.cantDiasPreviosAnunciar}
-              readOnly
-            />
-            <label className='label'>Días Previos Recordar:</label>
-            <input
-              className='input'
-              value={actividad.cantDiasPreviosRecordar}
-              readOnly
-            />
-            <label className='label'>Modalidad:</label>
-            <input
-              className='input'
-              value={actividad.modalidad}
-              readOnly
-            />
-            <label className='label'>Link de Reunión:</label>
-            <input
-              className='input'
-              value={actividad.linkDeReunion}
-              readOnly
-            />
-            <label className='label'>Tipo:</label>
-            <input
-              className='input'
-              value={actividad.tipoActividad}
-              readOnly
-            />
-            <label className='label'>Estado:</label>
-            <input
-              className='input'
-              value={actividad.estadoActividad}
-              readOnly
-            />
+          <div className="actividadDetailsContainer">
+            <div className="actividadCard">
+              <div className='actividadDetails'>
+                <label className='label'>Semana:</label>
+                <input
+                  className='input'
+                  value={actividad.numeroSemana}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Nombre:</label>
+                <input
+                  className='input'
+                  value={actividad.nombre}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Fecha y Hora programada:</label>
+                <DatePicker
+                  className='input'
+                  selected={new Date(actividad.fechaHoraProgramada)}
+                  dateFormat="dd/MM/yyyy HH:mm"
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Días Previos Anunciar:</label>
+                <input
+                  className='input'
+                  value={actividad.cantDiasPreviosAnunciar}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Días Previos Recordar:</label>
+                <input
+                  className='input'
+                  value={actividad.cantDiasPreviosRecordar}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Modalidad:</label>
+                <input
+                  className='input'
+                  value={actividad.modalidad}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Link de Reunión:</label>
+                <input
+                  className='input'
+                  value={actividad.linkDeReunion}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Tipo:</label>
+                <input
+                  className='input'
+                  value={actividad.tipoActividad}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Estado:</label>
+                <input
+                  className='input'
+                  value={actividad.estadoActividad}
+                  readOnly
+                />
+              </div>
+            </div>
           </div>
         ) : (
           <p>Cargando información de la actividad...</p>

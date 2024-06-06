@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import './Login.css';
-import usuario from '../img/usuario.png';
 
 function Login() {
   const [correo, setCorreo] = useState('');
@@ -18,16 +18,15 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        // Guardar la información del usuario en el localStorage, incluyendo sede y tipo
         localStorage.setItem('usuario', JSON.stringify({
           correo,
           contraseña,
           sede: data.sede,
-          tipo: data.tipo
+          tipo: data.tipo,
+          nombre: data.nombre,
+          apellido1: data.apellido1,
         }));
-
-        // Redirigir a la página de menú si la autenticación fue exitosa
-        window.location.href = '/MenuPrincipal'; // Cambia la ruta según tu configuración
+        window.location.href = '/MenuPrincipal';
       } else {
         const data = await response.json();
         alert(data.error);
@@ -43,29 +42,48 @@ function Login() {
   };
 
   return (
-    <div>
-      <div className='login'>
-        <label className='titulo'>EQUIPO GUIA DE PRIMER INGRESO</label>
-        <img src={usuario} alt='Usuario' className='imagen-usuario' />
-        <label className='usuarioLabel'>Correo: </label>
-        <input
-          className='inputUsuarioLogin'
-          type='text'
-          placeholder='Ingresa tu correo'
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
-        <label className='contrasennaLabel'>Contraseña: </label>
-        <input
-          className='inputContrasennaLogin'
-          type='password'
-          placeholder='Ingresa tu contraseña'
-          value={contraseña}
-          onChange={(e) => setContraseña(e.target.value)}
-        />
-        <button className='boton-ingresar' onClick={handleLogin}>Ingresar</button>
-        <button className='boton-olvidar-contrasenna' onClick={handleOlvidarContrasena}>Olvidaste tu contraseña</button>
-      </div>
+    <div className="fullscreen-container">
+      <Container className="d-flex justify-content-center align-items-center min-vh-100">
+        <Row>
+          <Col>
+            <Card className="shadow p-3 mb-5 rounded">
+              <Card.Body>
+                <Card.Title className="card-title-custom">
+                  Login
+                </Card.Title>
+                <Form>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Correo:</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Ingresa tu correo"
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
+                      className="input-dark"
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicPassword" className="mt-3">
+                    <Form.Label>Contraseña:</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Ingresa tu contraseña"
+                      value={contraseña}
+                      onChange={(e) => setContraseña(e.target.value)}
+                      className="input-dark"
+                    />
+                  </Form.Group>
+                  <Button variant="primary" className="mt-4 w-100 btn-custom" onClick={handleLogin}>
+                    Ingresar
+                  </Button>
+                  <Button variant="link" className="mt-2 w-100 text-dark" onClick={handleOlvidarContrasena}>
+                    ¿Olvidaste tu contraseña?
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

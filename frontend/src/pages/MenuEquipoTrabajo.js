@@ -1,30 +1,38 @@
 import React from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './MenuEquipoTrabajo.css';
-
 
 function MenuEquipoTrabajo() {
 
-  const handleVolver= () => {
-
+  const handleVolver = () => {
     window.location.href = '/MenuPrincipal'; 
   };
-  const handleRegistrarEquipo = () => {
 
+  const handleRegistrarEquipo = () => {
     window.location.href = '/EquipoTrabajo'; 
   };
-  const handleEditarEquipo = () => {
 
+  const handleEditarEquipo = () => {
     window.location.href = '/BuscarEditarEquipo'; 
   };
+
   return (
-    <div>
-      <div className='menuEquipoTrabajo'>
-        <label className='titulo'>Menu Equipo de Trabajo</label>
-        <button className='registrar-equipo' onClick={handleRegistrarEquipo}>Registrar Equipo de trabajo</button>
-        <button className='editar-equipo' onClick={handleEditarEquipo}>Editar Equipo de trabajo</button>
-        <button className='volverMenuEquipo' onClick={handleVolver}>Volver</button>
+    <Container className="menu-equipo-container fullscreen-container d-flex flex-column align-items-center justify-content-center">
+      <h1 className="text-center mb-4 title">Menú Equipo de Trabajo</h1>
+      <div className="menu-box">
+        <Button variant="outline-dark" className="menu-button mb-3" onClick={handleRegistrarEquipo} block>
+          Registrar Equipo de Trabajo
+        </Button>
+        <Button variant="outline-dark" className="menu-button mb-3" onClick={handleEditarEquipo} block>
+          Editar Equipo de Trabajo(NO es necesario implementar)
+        </Button>
       </div>
-    </div>
+      <Row className="mt-4">
+        <Col className="text-center">
+          <Button variant="danger" onClick={handleVolver} block>Volver</Button>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

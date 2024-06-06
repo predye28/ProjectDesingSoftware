@@ -1,109 +1,77 @@
-.modificarActividad{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
+/* VerActividad.css */
 
-.comentarActividad{
-    position: fixed;
-    bottom: 20px;
-    right: 400px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.eliminarActividad{
-    position: fixed;
-    bottom: 20px;
-    right: 200px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-
-.volverVerActividad{
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.aficheVer{
-    position: absolute;
-    top: 360px;
-    left: 150px;
-}
-
-.selectVerResponsable{
-    position: absolute;
-    width: 200px;
-    height: 50px;
-    left: 700px;
-    top: 170px;
+.menuPersona {
+    background-color: var(--color-beige-claro);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectVerTipo{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 700px;
-    top: 260px;
+  .titulo {
+    font-size: 2.5rem;
+    color: var(--color-verde-oscuro);
+    border-bottom: 2px solid var(--color-marron-oscuro);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+    letter-spacing: 1px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectVerEstado{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 700px;
-    top: 350px;
+  .actividadDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectVerVirPre{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 900px;
-    top: 260px;
+  .actividadCard {
+    width: 80%;
+    max-width: 600px;
+    border: 1px solid var(--color-marron);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: var(--color-beige);
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.contenedorVerDatePicker {
-    position: absolute;
-    top: 450px;
-    left: 150px;
+  .actividadDetails {
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-marron);
+    border-radius: 5px;
+  }
+  
+  .volverVerActividad,
+  .comentarActividad,
+  .eliminarActividad,
+  .modificarActividad {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .volverVerActividad:hover,
+  .comentarActividad:hover,
+  .eliminarActividad:hover,
+  .modificarActividad:hover {
+    background-color: var(--color-marron-oscuro);
   }
   

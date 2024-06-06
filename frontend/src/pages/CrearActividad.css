@@ -1,85 +1,72 @@
-.registrarActividad{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+/* CrearActividad.css */
+
+.menuPersona {
+    background-color: var(--color-beige-claro);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .titulo {
+    font-size: 2.5rem;
+    color: var(--color-verde-oscuro);
+    border-bottom: 2px solid var(--color-marron-oscuro);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
-}
-
-
-.volverCrearActividad{
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.afiche{
-    position: absolute;
-    top: 360px;
-    left: 150px;
-}
-
-.selectResponsable{
-    position: absolute;
-    width: 200px;
-    height: 50px;
-    left: 700px;
-    top: 90px;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+    letter-spacing: 1px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectTipo{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 700px;
-    top: 350px;
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectEstado{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 700px;
-    top: 440px;
+  .inputContainer {
+    margin-bottom: 15px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectVirPre{
-    position: absolute;
-    width: 150px;
-    height: 50px;
-    left: 900px;
-    top: 350px;
+  .input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-marron);
+    border-radius: 5px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.contenedorDatePicker {
-    position: absolute;
-    top: 450px;
-    left: 150px;
+  .select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-marron);
+    border-radius: 5px;
+    background-color: white; /* Cambia el color de fondo según tu preferencia */
+  }
+  
+  .button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: var(--color-marron-oscuro);
+  }
+  
+  .columnas {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .columna {
+    width: 48%; /* Esto asegura que haya un pequeño espacio entre las columnas */
   }
   

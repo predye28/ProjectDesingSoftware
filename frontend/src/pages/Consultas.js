@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './Consultas.css';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
@@ -192,7 +193,7 @@ const handleDescargarExcel = () =>{
   const buttonsConfig = {
     AD: [
       //{ label: 'Consultar Plan de Trabajo', onClick: handlePlanes, className: 'consultarPlanTrabajo' },
-      { label: 'Consultar Profesores', onClick: handleProfesores, className: 'consultarProfesores' },
+      { label: 'Consultar Profesores por sede', onClick: handleProfesores, className: 'consultarProfesores' },
       { label: 'Lista de Estudiantes', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
     ],
     PG: [
@@ -208,68 +209,42 @@ const handleDescargarExcel = () =>{
 
   const buttons = buttonsConfig[tipo] || []
 
-
   return (
-    <div>
-      <div className='menuPersona'>
-        <label className='titulo'>Consultas</label>
-        <label style = {{position: 'absolute', top: 150, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>{/* Seleccione el año que desea consultar: \n Seleccione el periodo\n*/}
-        <label style = {{position: 'absolute', top: 250, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>
-        
-
-        {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className='scrollable-list-container'>
-          <ul className='scrollable-list'>
-            {consultas.length > 0 ? (
-              consultas.map(equipo => (
-                <li key={equipo._id} className='scrollable-list-item pointer-cursor' onClick={() => handleEditar(equipo)}>{equipo.nombre}</li>
-              ))
-            ) : (
-              <li className='scrollable-list-item'></li>
-            )}
-          </ul>
-        </div>
-      )}
-  {/* 
-        <select className='selectAño' onChange={handleAnioChange}>
-            <option value="">_</option>
-           
-            <option value="2024">2024</option>
-            <option value="2025">2025</option>
-        
-        </select>    
-        */
-          }
- {/* 
-        <select className='selectPeriodo' onChange={handleSemestreChange}>
-            <option value="">_</option>
-           
-            <option value="1">Semestre 1</option>
-            <option value="2">Semestre 2</option>
-          
-        </select>  */
-          }
-        
-        {buttons.map((button, index) => (
-          <button key={index} className={button.className} onClick={button.onClick}>
-            {button.label}
-          </button>
-        ))}
-        {/* 
-        <button className='listaEstudiantes' onClick={handleBuscarAlfa}>Lista de estudiantes</button>
-      
-        
-        <button className='consultarProfesores' onClick={handleProfesores}>Consultar Profesores Guías</button>
-        */}
-          {/*
-        <button className='consultarPlanTrabajo' onClick={handlePlanes}>Consultar Plan de Trabajo</button>*/}
-         
-        {excelVisible && <button className='descargarExcel' onClick={handleDescargarExcel}>Descargar Excel</button>}
-        <button className='volverConsultas' onClick={handleVolver}> Volver</button>
-      </div>
-    </div>
+    <Container className="consultas-container fullscreen-container">
+      <Row className="mb-4">
+        <Col>
+          <h1 className="text-center mb-4 title">Consultas</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3} className="d-flex flex-column align-items-start">
+          {buttons.map((button, index) => (
+            <Button key={index} variant="outline-dark" className="menu-button mb-3" onClick={button.onClick} block>
+              {button.label}
+            </Button>
+          ))}
+          {excelVisible && <Button variant="outline-dark" className="menu-button mb-3" onClick={handleDescargarExcel} block>Descargar Excel</Button>}
+          <Button variant="danger" className="volver-button" onClick={handleVolver} block>Volver</Button>
+        </Col>
+        <Col md={9}>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="scrollable-list-container">
+              <ul className="scrollable-list">
+                {consultas.length > 0 ? (
+                  consultas.map(equipo => (
+                    <li key={equipo._id} className="scrollable-list-item pointer-cursor" onClick={() => handleEditar(equipo)}>{equipo.nombre}</li>
+                  ))
+                ) : (
+                  <li className="scrollable-list-item">No hay datos</li>
+                )}
+              </ul>
+            </div>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

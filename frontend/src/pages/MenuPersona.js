@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './MenuPersona.css';
 
 function MenuPersona() {
-  const [nombrePersona, setNombrePersona] = useState('');
-
-  useEffect(() => {
-    // Obtener el correo electrónico de la persona del localStorage
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    const correo = usuario ? usuario.correo : '';
-
-    // Hacer una solicitud al servidor para obtener el nombre de la persona asociada con el correo electrónico
-    fetch(`/api/personaRoutes/${correo}/nombre`)
-      .then(response => response.json())
-      .then(data => {
-        setNombrePersona(data.nombre);
-      })
-      .catch(error => console.error('Error:', error));
-  }, []);
-
   const handleVolver = () => {
     window.location.href = '/MenuPrincipal'; 
   };
@@ -32,15 +17,33 @@ function MenuPersona() {
   };
 
   return (
-    <div>
-      <div className='menuPersona'>
-        <label className='titulo'>Persona en línea: {nombrePersona}</label>
-        <button className='registrar-personal' onClick={handleRegistrarPersonal}>Registrar Personal</button>
-        <button className='eliminar-personal' onClick={handleEliminarPersonal}>Eliminar Personal</button>
-        <button className='editar-personal' onClick={handleEditarPersonal}>Editar Personal</button>
-        <button className='volver' onClick={handleVolver}>Volver</button>
-      </div>
-    </div>
+    <Container className="menu-principal-container">
+      <Row className="mb-2">
+        <Col>
+          <h1 className="text-center mb-4 title">Gestionar Personal</h1>
+        </Col>
+      </Row>
+      <Row className="menu-buttons">
+        <Col>
+          <div className="buttons-container">
+            <Button variant="outline-dark" className="menu-button" onClick={handleRegistrarPersonal} block>
+              Registrar Personal
+            </Button>
+            <Button variant="outline-dark" className="menu-button" onClick={handleEliminarPersonal} block>
+              Eliminar Personal
+            </Button>
+            <Button variant="outline-dark" className="menu-button" onClick={handleEditarPersonal} block>
+              Editar Personal
+            </Button>
+          </div>
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col className="text-center">
+          <Button variant="danger" onClick={handleVolver} block>Volver</Button>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -87,23 +87,29 @@ function VerPlanTrabajo() {
   return (
     <div>
       <div className='menuPersona'>
-        <label className='titulo'>Detalles del Plan de Trabajo</label>
+        <h1 className='title'>Detalles del Plan de Trabajo</h1>
         {planTrabajo ? (
-          <div>
-            <label style={{ position: 'absolute', top: 150, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Nombre del Plan de Trabajo:</label>
-            <label style={{ position: 'absolute', top: 150, left: 350, fontSize: 20 }}>{planTrabajo.nombre}</label>
-            <label style={{ position: 'absolute', top: 200, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha de Inicio:</label>
-            <label style={{ position: 'absolute', top: 200, left: 350, fontSize: 20 }}>{planTrabajo.fechaInicio}</label>
-            <label style={{ position: 'absolute', top: 250, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha de Fin:</label>
-            <label style={{ position: 'absolute', top: 250, left: 350, fontSize: 20 }}>{planTrabajo.fechaFin}</label>
+          <div className="planDetailsContainer">
+          <div className="planDetails">
+            <label>Nombre del Plan de Trabajo:</label>
+            <label>{planTrabajo.nombre}</label>
           </div>
+          <div className="planDetails">
+            <label>Fecha de Inicio:</label>
+            <label>{planTrabajo.fechaInicio}</label>
+          </div>
+          <div className="planDetails">
+            <label>Fecha de Fin:</label>
+            <label>{planTrabajo.fechaFin}</label>
+          </div>
+        </div>
         ) : (
           <p>Cargando información del plan de trabajo...</p>
         )}
         
-        <div>
-          <label style={{ position: 'absolute', top: 300, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Actividades:</label>
-          <div>
+        <div className="actividadesContainer">
+          <label className="actividadesTitle">Actividades:</label>
+          <div className="actividadesList">
             {actividades.map((actividad) => (
               <button
                 key={actividad._id}

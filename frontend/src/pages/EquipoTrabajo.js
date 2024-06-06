@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import './EquipoTrabajo.css';
 
 function EquipoTrabajo() {
@@ -13,11 +14,9 @@ function EquipoTrabajo() {
 
   const cargarDatosIniciales = useCallback(async () => {
     try {
-      // Cargar profesores por sede
       const profesores = {};
       for (const sede of sedes) {
         const response = await fetch(`/api/personaRoutes/profesores/${sede}`);
-        console.log(response)
         if (!response.ok) {
           throw new Error('Error al obtener profesores');
         }
@@ -26,16 +25,13 @@ function EquipoTrabajo() {
       }
       setProfesoresPorSede(profesores);
 
-      // Cargar profesores coordinadores
       const responseCoordinadores = await fetch(`/api/personaRoutes/profesoresPGC/PGC`);
-      console.log(responseCoordinadores)
       if (!responseCoordinadores.ok) {
         throw new Error('Error al obtener profesores coordinadores');
       }
       const dataCoordinadores = await responseCoordinadores.json();
       setProfesoresCoordinadores(dataCoordinadores);
 
-      // Cargar años disponibles
       cargarAños();
     } catch (error) {
       console.error('Error:', error);
@@ -45,8 +41,6 @@ function EquipoTrabajo() {
   const cargarAños = () => {
     const añoActual = new Date().getFullYear();
     const añosDisponibles = [añoActual, añoActual + 1];
-  
-  //  console.log()
     setAños(añosDisponibles);
   };
 
@@ -103,79 +97,95 @@ function EquipoTrabajo() {
       [sede]: profesorId
     });
   };
-  
-
-
 
   return (
-    <div>
-      <div className='menuPrincipal'>
-        <label className='titulo'>Registrar Equipo de Trabajo</label>
-        <label>Nombre equipo de trabajo:</label>
-        <input
-          type='text'
-          value={nombreEquipo}
-          onChange={(e) => setNombreEquipo(e.target.value)}
-        />
+    <Container className='equipo-trabajo-container'>
+      <h2 className='title'>Registrar Equipo de Trabajo</h2>
+      <div className='form-container'>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group>
+            <Form.Label>Nombre equipo de trabajo:</Form.Label>
+            <Form.Control
+              type='text'
+              value={nombreEquipo}
+              onChange={(e) => setNombreEquipo(e.target.value)}
+              required
+            />
+          </Form.Group>
 
-        {sedes.map((sede) => (
-          <div key={sede}>
-            <label>{`Profesor ${sede}:`}</label>
-            <select
-              value={profesoresSeleccionados[sede] || ''}
-              onChange={(e) => handleProfesorSeleccionado(sede, e.target.value)}
+          {sedes.map((sede) => (
+            <Form.Group key={sede}>
+              <Form.Label>{`Profesor ${sede}:`}</Form.Label>
+              <Form.Control
+                as='select'
+                value={profesoresSeleccionados[sede] || ''}
+                onChange={(e) => handleProfesorSeleccionado(sede, e.target.value)}
+                required
+              >
+                <option value=''>Selecciona un profesor</option>
+                {profesoresPorSede[sede] && profesoresPorSede[sede].map((profesor) => (
+                  <option key={profesor._id} value={profesor._id}>{profesor.nombre}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          ))}
+
+          <Form.Group>
+            <Form.Label>Profesor Coordinador:</Form.Label>
+            <Form.Control
+              as='select'
+              value={profesoresSeleccionados['coordinador'] || ''}
+              onChange={(e) => handleProfesorSeleccionado('coordinador', e.target.value)}
+              required
             >
-              <option value="">Selecciona un profesor</option>
-              {profesoresPorSede[sede] && profesoresPorSede[sede].map((profesor) => (
+              <option value=''>Selecciona un profesor coordinador</option>
+              {profesoresCoordinadores.map((profesor) => (
                 <option key={profesor._id} value={profesor._id}>{profesor.nombre}</option>
               ))}
-            </select>
-          </div>
-        ))}
+            </Form.Control>
+          </Form.Group>
 
-        <div>
-          <label>Profesor Coordinador:</label>
-          <select
-            value={profesoresSeleccionados['coordinador'] || ''}
-            onChange={(e) => handleProfesorSeleccionado('coordinador', e.target.value)}
-          >
-            <option value="">Selecciona un profesor coordinador</option>
-            {profesoresCoordinadores.map((profesor) => (
-              <option key={profesor._id} value={profesor._id}>{profesor.nombre}</option>
-            ))}
-          </select>
-        </div>
-
-        <label>Año:</label>
-        <select
-          value={añoSeleccionado}
-          onChange={handleAñoSeleccionado}
-        >
-          <option value="">Selecciona un año</option>
-          {años.map((año) => (
-            <option key={año} value={año}>{año}</option>
-          ))}
-        </select>
-
-        <label>Semestre:</label>
-        <select
-          value={semestre}
-          onChange={(e) => setSemestre(e.target.value)}
-        >
-          <option value="">Selecciona un semestre</option>
-          <option value="1">Primer Semestre</option>
-          <option value="2">Segundo Semestre</option>
-        </select>
-
-        <button className='registrarEquipo' onClick={handleSubmit}>Registrar Equipo</button>
-        <button className='volverEquipo' onClick={handleVolver}>Volver</button>
-
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Label>Año:</Form.Label>
+                <Form.Control
+                  as='select'
+                  value={añoSeleccionado}
+                  onChange={handleAñoSeleccionado}
+                  required
+                >
+                  <option value=''>Selecciona un año</option>
+                  {años.map((año) => (
+                    <option key={año} value={año}>{año}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group>
+                <Form.Label>Semestre:</Form.Label>
+                <Form.Control
+                  as='select'
+                  value={semestre}
+                  onChange={(e) => setSemestre(e.target.value)}
+                  required
+                >
+                  <option value=''>Selecciona un semestre</option>
+                  <option value='1'>Primer Semestre</option>
+                  <option value='2'>Segundo Semestre</option>
+                </Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Form>
       </div>
-    </div>
+      <div className='botones-container'>
+        <Button variant="outline-dark" className='registrarEquipo' onClick={handleSubmit}>Registrar Equipo</Button>
+        <Button variant='danger' className='volverEquipo' onClick={handleVolver}>Volver</Button>
+      </div>
+    </Container>
   );
 }
 
 export default EquipoTrabajo;
-
-
-

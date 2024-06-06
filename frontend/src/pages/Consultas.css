@@ -1,134 +1,45 @@
-.volverConsultas{
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
+.fullscreen-container {
+  height: 100vh;
+  padding-top: 20px;
 }
 
-.tablaConsultas {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  /*  background-color: #FFFFFF;*/
-    background-color: transparent;
-    position: absolute; 
-    top: 150px; 
-    left: 600px; 
-    padding: 4px;
-    width: 50%; 
-    height: 60vh;
+.title {
+  font-size: 2.5em;
+  color: #333;
 }
 
-.listaEstudiantes{
-    position: fixed;
-    bottom: 20px; 
-    left: 200px; 
-    width: 150px;
-    height: 50px;
-    top: 320px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
+.menu-button {
+  width: 100%;
+  text-align: left;
 }
 
-.listaEstudiantesTodos{
-  position: fixed;
-  bottom: 20px; 
-  left: 200px; 
-  width: 150px;
-  height: 50px;
-  top: 190px;
-  background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-  border-radius: 20px;
-  color: #FFFFFF;
-  text-align: center;
-}
-
-.consultarProfesores{
-    position: fixed;
-    bottom: 20px; 
-    left: 200px; 
-    width: 150px;
-    height: 50px;
-    top: 390px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.consultarPlanTrabajo{
-    position: fixed;
-    bottom: 20px; 
-    left: 200px; 
-    width: 150px;
-    height: 50px;
-    top: 460px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.selectAño{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 380px;
-    top: 150px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-.selectPeriodo{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 380px;
-    top: 250px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+.volver-button {
+  width: 100%;
 }
 
 .scrollable-list-container {
-    max-height: 200px; /* Adjust the max-height as needed */
-    overflow-y: auto;
-    margin-top: 20px; /* Adjust margin top as needed */
-    border: 1px solid #ccc; /* Optional: Add border for visual separation */
-    border-radius: 10px; /* Optional: Add border radius for rounded corners */
-  }
-  
-  .scrollable-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .scrollable-list-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee; /* Optional: Add border bottom for item separation */
-    color: white; /* Set text color to white */
-    font-family: Arial, sans-serif; /* Set font family to Arial with a fallback to sans-serif */
-    font-weight: bold; /* Set font weight to bold */
-  }
-  
-  .scrollable-list-item:last-child {
-    border-bottom: none;
-  }
-  
-  
+  max-height: 600px;
+  overflow-y: auto;
+  border: 3px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+}
 
-  .pointer-cursor {
-    cursor: pointer;
-  }
+.scrollable-list {
+  list-style: none;
+  padding: 0;
+}
+
+.scrollable-list-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.scrollable-list-item:hover {
+  background-color: #f1f1f1;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}

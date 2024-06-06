@@ -27,6 +27,8 @@ router.post('/auth', async (req, res) => {
       message: 'Autenticación exitosa',
       sede: usuario.sede,
       tipo: usuario.tipo,
+      nombre: usuario.nombre,
+      apellido1: usuario.apellido1,
     });
   } catch (error) {
     res.status(500).json({ error: error.message  });
