@@ -1,5 +1,3 @@
-// VerActividad.js
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './VerActividad.css';
@@ -138,6 +136,18 @@ function VerActividad() {
                   value={actividad.estadoActividad}
                   readOnly
                 />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Profesores Responsables:</label>
+                {actividad.personasResponsables && actividad.personasResponsables.length > 0 ? (
+                  <ul>
+                    {actividad.personasResponsables.map((profesor) => (
+                      <li key={profesor._id}>{`${profesor.nombre} ${profesor.apellido1}`}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No hay profesores responsables asignados.</p>
+                )}
               </div>
             </div>
           </div>

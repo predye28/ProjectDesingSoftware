@@ -42,6 +42,10 @@ const actividadSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    personasResponsables: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Persona'
+    }],
 });
 module.exports = mongoose.model('Actividad', actividadSchema);
 

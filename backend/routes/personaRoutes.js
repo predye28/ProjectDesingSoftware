@@ -310,6 +310,18 @@ router.get('/profesores/:sede', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get('/profesores/:sede', async (req, res) => {
+  try {
+    const { sede } = req.params;
+    // Filtrar por sede y tipo de persona
+    const profesores = await Persona.find({ sede, tipo: 'PGC' }, 'nombre apellido1 _id');
+    res.json(profesores);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/profesoresPGC/:tipo', async (req, res) => {
   try {
     const { tipo } = req.params;
