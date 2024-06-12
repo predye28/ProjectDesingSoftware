@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './MenuPrincipal.css';
 
 function MenuPrincipal() {
   // Obtener los datos del usuario desde localStorage
+
+  const [persona, setPersona] = useState(null);
+
   const usuario = JSON.parse(localStorage.getItem('usuario'));
-  const { tipo, nombre, sede } = usuario;
+  const { tipo, nombre, sede, carne, foto } = usuario;
 
   const handleSalir = () => {
     window.location.href = '/';
   };
+
+
+  useEffect(() => {
+    const obtenerPersona = async () => {
+      try {
+        const response = await fetch(`/api/estudianteRoutes/${carne}`);
+        if (!response.ok) {
+          throw new Error('Persona no encontrada');
+        }
+        const data = await response.json();
+        setPersona(data);
+      } catch (error) {
+        console.error('Error:', error);
+        setPersona(null);
+      }
+    };
+
+    if (usuario.tipo === 'ES') {
+      obtenerPersona();
+    }
+  }, [usuario.tipo]);
 
   const navigationHandlers = {
     handleGestionPersonal: () => { window.location.href = '/MenuPersona'; },
@@ -17,6 +41,8 @@ function MenuPrincipal() {
     handleEquipoTrabajo: () => { window.location.href = '/MenuEquipoTrabajo'; },
     handleEstudiantes: () => { window.location.href = '/Estudiante'; },
     handleConsultas: () => { window.location.href = '/Consultas'; },
+    handleEditarPerfil: () => { window.location.href = `/EditarEstudiante/${carne}`; },
+    handleVerActividades: () => { window.location.href = `/MenuActividades`; },
   };
 
   const buttonsConfig = {
@@ -36,6 +62,11 @@ function MenuPrincipal() {
       { label: 'Estudiantes', onClick: navigationHandlers.handleEstudiantes },
       { label: 'Plan de Trabajo', onClick: navigationHandlers.handlePlanTrabajo },
     ],
+    ES: [
+      { label: 'Editar Perfil', onClick: navigationHandlers.handleEditarPerfil },
+      { label: 'Ver Actividades', onClick: navigationHandlers.handleVerActividades }, 
+      { label: 'Ver Buzón', onClick: navigationHandlers.handleEditarPerfil }
+    ],
   };
 
   const buttons = buttonsConfig[tipo] || [];
@@ -49,6 +80,8 @@ function MenuPrincipal() {
         return 'Profesor Guía';
       case 'PGC':
         return 'Profesor Guía Coordinador';
+      case 'ES':
+        return 'Estudiante';
       default:
         return 'Usuario';
     }
@@ -74,7 +107,8 @@ function MenuPrincipal() {
   };
 
   const sedeDescriptiva = getSedeDescriptiva(sede);
-
+  
+//  const fotoBase64 = foto ? atob(foto) : '';
   return (
     <Container className="menu-principal-container">
       <Row className="mb-2">
@@ -85,6 +119,11 @@ function MenuPrincipal() {
       <Row className="mb-4">
         <Col>
           <div className="usuario-info-container">
+            {tipo === 'ES' && persona && persona.foto && (
+              <div className="foto-container text-center mb-4">
+                <img src={`data:image/jpeg;base64,${persona.foto}`}  alt="Foto del usuario" className="foto-usuario" />
+              </div>
+            )}
             <p className='nombre-usuario'>Nombre: {nombre}</p>
             <p className='tipo-usuario'>Tipo de usuario: {tipoUsuarioDescriptivo}</p>
             <p className='tipo-usuario'>Sede: {sedeDescriptiva}</p>
@@ -112,4 +151,3 @@ function MenuPrincipal() {
 }
 
 export default MenuPrincipal;
-

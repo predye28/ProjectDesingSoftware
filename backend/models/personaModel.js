@@ -11,7 +11,6 @@ const personaSchema = mongoose.Schema({
   sede: { type: String, required: true },
   tipo: { type: String, required: true },
   codigo: { type: String, required: false },
-  carne: { type: String, required: false }
 });
 
 module.exports = mongoose.model('Persona', personaSchema);

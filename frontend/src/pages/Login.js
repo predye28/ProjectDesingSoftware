@@ -25,6 +25,8 @@ function Login() {
           tipo: data.tipo,
           nombre: data.nombre,
           apellido1: data.apellido1,
+          carne: data.carne,
+          foto: data.foto,
         }));
         window.location.href = '/MenuPrincipal';
       } else {

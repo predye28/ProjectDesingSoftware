@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Persona = require('../models/personaModel');
+const Estudiante = require('../models/estudianteModel');
 const EquipoTrabajo = require('../models/equipoTrabajoModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -8,6 +9,7 @@ const Mailgen = require('mailgen');
 const mongoose = require('mongoose');
 
 router.post('/auth', async (req, res) => {
+/*
   const { correo, contraseña } = req.body;
 
   try {
@@ -32,6 +34,60 @@ router.post('/auth', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: error.message  });
+  }
+  */
+
+  const { correo, contraseña } = req.body;
+
+  try {
+    // Check if the user exists in Persona collection
+    let user = await Persona.findOne({ correo });
+    let tipoES = false;
+    if (!user) {
+      // If not found in Persona, check in Estudiante collection
+      user = await Estudiante.findOne({ correo });
+      tipoES = true;
+    }
+
+    if (!user) {//No se encontro ni persona ni estudiante
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Check the password
+    let isMatch;
+    if(tipoES === false){
+      isMatch = await bcrypt.compare(contraseña, user.contraseña);
+    }else{
+      isMatch = contraseña === user.contraseña;
+    }
+
+
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Contraseña incorrecta' });
+    }
+
+    // If everything is correct, return the user data
+    if(tipoES === false){
+      res.json({
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo
+      });
+    } else {
+      res.json({
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo,
+        carne: user.carne
+      });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
 
@@ -172,6 +228,51 @@ router.put('/editar/:identificacion', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/*
+router.put('/editarContra/:correo', async (req, res) => {
+  try {
+    const { nombre, apellido1, apellido2, correo, celular, sede, tipo, contraseña } = req.body;
+    const personaActualizada = await Estudiante.findOneAndUpdate(
+      { correo: req.params.correo },
+      { nombre, apellido1, apellido2, correo, celular, sede, tipo, contraseña },
+      { new: true }
+    );
+    res.json(personaActualizada);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+*/
+
+router.put('/editarContra/:correo', async (req, res) => {
+  try {
+    const { correo } = req.params;
+    const { newPassword } = req.body;
+
+    // Find the student by email
+    const estudiante = await Estudiante.findOne({ correo });
+
+    // If student not found, return an error
+    if (!estudiante) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Update the password
+    estudiante.contraseña = newPassword;
+
+    // Save the updated student
+    await estudiante.save();
+
+    // Return a success message
+    return res.json({ message: 'Contraseña cambiada exitosamente' });
+  } catch (error) {
+    // Return an error message
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+
 router.get('/:correo/id', async (req, res) => {
   try {
     const { correo } = req.params;

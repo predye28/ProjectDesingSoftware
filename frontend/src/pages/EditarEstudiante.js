@@ -17,18 +17,25 @@ function EditarEstudiante() {
     contraseña: '',
     celular: '',
     sede: '',
-    tipo: ''
+    tipo: '',
+    foto: ''
   });
+  const [foto, setFoto] = useState(null);
+  const [fotoPreview, setFotoPreview] = useState(null);
 
   const obtenerPersona = useCallback(async () => {
     try {
-      const response = await fetch(`/api/personaRoutes/${identificacion}`);
+      const response = await fetch(`/api/estudianteRoutes/${identificacion}`);
       if (!response.ok) {
         throw new Error('Persona no encontrada');
       }
       const data = await response.json();
       setPersona(data);
       setEdicionPersona(data);
+      if (data.foto) {
+        setFotoPreview(`data:image/jpeg;base64,${data.foto}`);
+      }
+      //setFotoPreview(data.foto);
     } catch (error) {
       setError(error.message);
       setPersona(null);
@@ -40,19 +47,33 @@ function EditarEstudiante() {
   };
 
   const handleGuardarCambios = async () => {
+    const formData = new FormData();
+    formData.append('nombre', edicionPersona.nombre);
+    formData.append('identificacion', edicionPersona.identificacion);
+    formData.append('apellido1', edicionPersona.apellido1);
+    formData.append('apellido2', edicionPersona.apellido2);
+    formData.append('correo', edicionPersona.correo);
+    formData.append('celular', edicionPersona.celular);
+    formData.append('sede', edicionPersona.sede);
+    formData.append('tipo', edicionPersona.tipo);
+    if (foto) formData.append('foto', foto);
+
     try {
-      const response = await fetch(`/api/personaRoutes/editar/${identificacion}`, {
+      const response = await fetch(`/api/estudianteRoutes/editar/${identificacion}`, {
         method: 'PUT',
+        /*
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(edicionPersona)
+        },*/
+
+       // body: JSON.stringify(edicionPersona)
+        body: formData
       });
       if (!response.ok) {
         throw new Error('Error al guardar los cambios');
       }
       alert('Cambios guardados exitosamente');
-      window.location.href = '/Estudiante'; 
+      window.location.href = '/MenuPrincipal'; 
     } catch (error) {
       setError(error.message);
     }
@@ -64,6 +85,12 @@ function EditarEstudiante() {
       ...prevState,
       [name]: value
     }));
+  };
+
+  const handleFotoChange = (e) => {
+    const file = e.target.files[0];
+    setFoto(e.target.files[0]);
+    setFotoPreview(URL.createObjectURL(file));
   };
 
   const handleVolver = () => {
@@ -90,6 +117,7 @@ function EditarEstudiante() {
               value={identificacion}
               onChange={(e) => setIdentificacion(e.target.value)}
               placeholder={id}
+              readOnly
             />
           </Col>
           <Col sm="2">
@@ -111,18 +139,30 @@ function EditarEstudiante() {
                   type="text"
                   name="nombre"
                   value={edicionPersona.nombre}
-                  onChange={handleInputChange}
+                  readOnly
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="2">Identificación:</Form.Label>
+              <Form.Label column sm="2">Carne:</Form.Label>
               <Col sm="10">
                 <Form.Control
                   type="text"
                   name="identificacion"
                   value={edicionPersona.identificacion}
-                  onChange={handleInputChange}
+                  readOnly
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="2">Foto:</Form.Label>
+              <Col sm="10">
+              {fotoPreview && <img src={fotoPreview} alt="Preview" className="foto-preview mb-2" />}
+                <Form.Control
+                  type="file"
+                  name="foto"
+                  accept="image/*"
+                  onChange={handleFotoChange}
                 />
               </Col>
             </Form.Group>
@@ -133,7 +173,7 @@ function EditarEstudiante() {
                   type="text"
                   name="apellido1"
                   value={edicionPersona.apellido1}
-                  onChange={handleInputChange}
+                  readOnly
                 />
               </Col>
             </Form.Group>
@@ -144,7 +184,7 @@ function EditarEstudiante() {
                   type="text"
                   name="apellido2"
                   value={edicionPersona.apellido2}
-                  onChange={handleInputChange}
+                  readOnly
                 />
               </Col>
             </Form.Group>
@@ -155,7 +195,7 @@ function EditarEstudiante() {
                   type="email"
                   name="correo"
                   value={edicionPersona.correo}
-                  onChange={handleInputChange}
+                  readOnly
                 />
               </Col>
             </Form.Group>
@@ -177,7 +217,7 @@ function EditarEstudiante() {
                   as="select"
                   name="sede"
                   value={edicionPersona.sede}
-                  onChange={(e) => setEdicionPersona({ ...edicionPersona, sede: e.target.value })}
+                  readOnly
                 >
                   <option value="LM">Limon</option>
                   <option value="CA">Cartago</option>
@@ -194,7 +234,7 @@ function EditarEstudiante() {
                   as="select"
                   name="tipo"
                   value={edicionPersona.tipo}
-                  onChange={(e) => setEdicionPersona({ ...edicionPersona, tipo: e.target.value })}
+                  readOnly
                 >
                   <option value="AD">Asistente Administrativo</option>
                   <option value="PG">Profesor Guia</option>
@@ -202,7 +242,7 @@ function EditarEstudiante() {
                   <option value="ES">Estudiante</option>
                 </Form.Control>
               </Col>
-            </Form.Group>
+            </Form.Group> 
             <Button variant="success" onClick={handleGuardarCambios}>Guardar Cambios</Button>
           </div>
         )}

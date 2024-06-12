@@ -14,6 +14,16 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Ruta para obtener todas las actividades
+router.get('/listar_actividades', async (req, res) => {
+  try {
+      const actividades = await Actividad.find();
+      res.json(actividades);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/:id/actividades', async (req, res) => {
     try {
       const actividades = await Actividad.find({ planTrabajo_id: req.params.id });
