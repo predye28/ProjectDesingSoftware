@@ -7,16 +7,16 @@ import Select from 'react-select';
 function CrearActividad() {
   const [numeroSemana, setNumeroSemana] = useState('');
   const [nombre, setNombre] = useState('');
-  const [tipoActividad] = useState('Remota');
+
   const [fechaHoraProgramada, setFechaHoraProgramada] = useState(null);
   const [cantDiasPreviosAnunciar, setCantDiasPreviosAnunciar] = useState('');
   const [cantDiasPreviosRecordar, setCantDiasPreviosRecordar] = useState('');
   const [modalidad, setModalidad] = useState('Online');
   const [linkDeReunion, setLinkDeReunion] = useState('');
   const [estadoActividad, setEstadoActividad] = useState('Planeada');
-  const [fechaPublicacion, setFechaPublicacion] = useState(null);
   const [profesores, setProfesores] = useState([]);
   const [profesoresSeleccionados, setProfesoresSeleccionados] = useState([]);
+  const [fechasRecordatorio, setFechasRecordatorio] = useState([]);
 
   useEffect(() => {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -46,7 +46,7 @@ function CrearActividad() {
   };
 
   const handleRegistrarActividad = async () => {
-    if (!numeroSemana || !nombre || !fechaHoraProgramada || !cantDiasPreviosAnunciar || !cantDiasPreviosRecordar || !modalidad || !estadoActividad || profesoresSeleccionados.length === 0) {
+    if (!numeroSemana || !nombre || !fechaHoraProgramada || !cantDiasPreviosAnunciar || !cantDiasPreviosRecordar || !modalidad || !estadoActividad || profesoresSeleccionados.length === 0 || fechasRecordatorio.length === 0) {
       alert('Por favor complete todos los campos requeridos.');
       return;
     }
@@ -65,21 +65,28 @@ function CrearActividad() {
       return;
     }
 
-    if (fechaPublicacion && fechaHoraProgramada) {
-      const diffDays = Math.floor((fechaHoraProgramada - fechaPublicacion) / (1000 * 60 * 60 * 24));
-      if (cantDiasRecordarInt > diffDays) {
-        alert('La cantidad de días requeridos para realizar recordatorios no puede ser mayor a la diferencia entre la fecha de la actividad y la fecha de la primera publicación.');
+    // Calcular la fecha de publicación
+    const fechaPublicacion = new Date(fechaHoraProgramada);
+    fechaPublicacion.setDate(fechaPublicacion.getDate() - cantDiasAnunciarInt);
+
+    // Validar que la fecha de publicación no sea después de la fecha programada
+    if (fechaPublicacion >= fechaHoraProgramada) {
+      alert('La fecha de publicación no puede ser posterior a la fecha programada.');
+      return;
+    }
+
+    // Validar fechas de recordatorio
+    for (const fecha of fechasRecordatorio) {
+      if (fecha < fechaPublicacion || fecha > fechaHoraProgramada) {
+        alert('Las fechas de recordatorio deben estar entre la fecha de publicación y la fecha programada.');
         return;
       }
-    } else {
-      alert('Por favor, seleccione la fecha de publicación y la fecha de la actividad.');
-      return;
     }
 
     try {
       const urlParts = window.location.href.split('/');
       const idPlanTrabajo = urlParts[urlParts.length - 1];
-      
+
       const response = await fetch(`/api/actividadesRoutes`, {
         method: 'POST',
         headers: {
@@ -88,7 +95,6 @@ function CrearActividad() {
         body: JSON.stringify({
           numeroSemana: numeroSemanaInt,
           nombre,
-          tipoActividad,
           fechaHoraProgramada,
           cantDiasPreviosAnunciar: cantDiasAnunciarInt,
           cantDiasPreviosRecordar: cantDiasRecordarInt,
@@ -97,6 +103,7 @@ function CrearActividad() {
           estadoActividad,
           planTrabajo_id: idPlanTrabajo,
           fechaPublicacion,
+          fechasRecordatorio,
           personasResponsables: profesoresSeleccionados.map((profesor) => profesor.value)
         })
       });
@@ -121,6 +128,30 @@ function CrearActividad() {
         setNumeroSemana('');
       }
     }
+  };
+
+  const handleFechasRecordatorioChange = (index, date) => {
+    const newFechasRecordatorio = [...fechasRecordatorio];
+    newFechasRecordatorio[index] = date;
+    setFechasRecordatorio(newFechasRecordatorio);
+  };
+
+  const renderFechasRecordatorioInputs = () => {
+    const inputs = [];
+    for (let i = 0; i < cantDiasPreviosRecordar; i++) {
+      inputs.push(
+        <div key={i} className='inputContainer'>
+          <label className='label'>Fecha de Recordatorio {i + 1}:</label>
+          <DatePicker
+            className='input'
+            selected={fechasRecordatorio[i]}
+            onChange={(date) => handleFechasRecordatorioChange(i, date)}
+            dateFormat="dd/MM/yyyy"
+          />
+        </div>
+      );
+    }
+    return inputs;
   };
 
   return (
@@ -159,15 +190,6 @@ function CrearActividad() {
               />
             </div>
             <div className='inputContainer'>
-              <label className='label'>Fecha de Publicación:</label>
-              <DatePicker
-                className='input'
-                selected={fechaPublicacion}
-                onChange={(date) => setFechaPublicacion(date)}
-                dateFormat="dd/MM/yyyy"
-              />
-            </div>
-            <div className='inputContainer'>
               <label className='label'>Días Previos Anunciar:</label>
               <input
                 className='input'
@@ -188,6 +210,7 @@ function CrearActividad() {
                 onChange={(e) => setCantDiasPreviosRecordar(e.target.value)}
               />
             </div>
+            {renderFechasRecordatorioInputs()}
             <div className='inputContainer'>
               <label className='label'>Modalidad:</label>
               <select

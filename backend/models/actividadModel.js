@@ -9,10 +9,6 @@ const actividadSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    tipoActividad: {
-        type: String,
-        required: true
-    },
     fechaHoraProgramada: {
         type: Date,
         required: true
@@ -49,6 +45,10 @@ const actividadSchema = mongoose.Schema({
     personasResponsables: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Persona'
+    }],
+    fechasRecordatorio: [{
+        type: Date,
+        required: true
     }],
 });
 module.exports = mongoose.model('Actividad', actividadSchema);

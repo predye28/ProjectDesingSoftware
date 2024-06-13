@@ -8,6 +8,9 @@ function VerActividad() {
   const { id } = useParams();
   const [actividad, setActividad] = useState(null);
 
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo } = usuario;
+
   useEffect(() => {
     const fetchActividad = async () => {
       try {
@@ -29,6 +32,9 @@ function VerActividad() {
         if (data.fechaPublicacion) {
           data.fechaPublicacion = new Date(data.fechaPublicacion);
         }
+        if (data.fechasRecordatorio) {
+          data.fechasRecordatorio = data.fechasRecordatorio.map(fecha => new Date(fecha));
+        }
 
         setActividad(data);
       } catch (error) {
@@ -44,24 +50,32 @@ function VerActividad() {
   };
 
   const handleEliminarActividad = async () => {
-    try {
-      const response = await fetch(`/api/actividadesRoutes/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
+    if (tipo === 'PGC') {
+      try {
+        const response = await fetch(`/api/actividadesRoutes/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Error al eliminar la actividad');
         }
-      });
-      if (!response.ok) {
-        throw new Error('Error al eliminar la actividad');
+        window.history.back();
+      } catch (error) {
+        console.error('Error al eliminar la actividad:', error);
       }
-      window.history.back();
-    } catch (error) {
-      console.error('Error al eliminar la actividad:', error);
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
     }
   };
 
   const handleModificarActividad = () => {
-    window.location.href = `/ModificarActividad/${id}`;
+    if (tipo === 'PGC') {
+      window.location.href = `/ModificarActividad/${id}`;
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
+    }
   };
 
   return (
@@ -106,7 +120,7 @@ function VerActividad() {
                 />
               </div>
               <div className='actividadDetails'>
-                <label className='label'>Días Previos Anunciar:</label>
+                <label className='label'>Días Previos Para Publicación:</label>
                 <input
                   className='input'
                   value={actividad.cantDiasPreviosAnunciar}
@@ -122,6 +136,25 @@ function VerActividad() {
                 />
               </div>
               <div className='actividadDetails'>
+                <label className='label'>Fechas de Recordatorio:</label>
+                {actividad.fechasRecordatorio && actividad.fechasRecordatorio.length > 0 ? (
+                  <ul>
+                    {actividad.fechasRecordatorio.map((fecha, index) => (
+                      <li key={index}>
+                        <DatePicker
+                          className='input'
+                          selected={fecha}
+                          dateFormat="dd/MM/yyyy"
+                          readOnly
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No hay fechas de recordatorio asignadas.</p>
+                )}
+              </div>
+              <div className='actividadDetails'>
                 <label className='label'>Modalidad:</label>
                 <input
                   className='input'
@@ -129,7 +162,7 @@ function VerActividad() {
                   readOnly
                 />
               </div>
-              {actividad.modalidad.toLowerCase() === 'virtual' && (
+              {actividad.modalidad.toLowerCase() === 'remota' && (
                 <div className='actividadDetails'>
                   <label className='label'>Link de Reunión:</label>
                   <input
@@ -139,14 +172,6 @@ function VerActividad() {
                   />
                 </div>
               )}
-              <div className='actividadDetails'>
-                <label className='label'>Tipo:</label>
-                <input
-                  className='input'
-                  value={actividad.tipoActividad}
-                  readOnly
-                />
-              </div>
               <div className='actividadDetails'>
                 <label className='label'>Estado:</label>
                 <input
