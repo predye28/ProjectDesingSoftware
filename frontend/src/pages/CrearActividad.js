@@ -7,7 +7,7 @@ import Select from 'react-select';
 function CrearActividad() {
   const [numeroSemana, setNumeroSemana] = useState('');
   const [nombre, setNombre] = useState('');
-  const [tipoActividad, setTipoActividad] = useState('Remota');
+  const [tipoActividad] = useState('Remota');
   const [fechaHoraProgramada, setFechaHoraProgramada] = useState(null);
   const [cantDiasPreviosAnunciar, setCantDiasPreviosAnunciar] = useState('');
   const [cantDiasPreviosRecordar, setCantDiasPreviosRecordar] = useState('');
@@ -195,8 +195,8 @@ function CrearActividad() {
                 value={modalidad}
                 onChange={(e) => setModalidad(e.target.value)}
               >
-                <option value="Remota">Remota</option>
                 <option value="Presencial">Presencial</option>
+                <option value="Remota">Remota</option>
               </select>
             </div>
             {modalidad === 'Remota' && (

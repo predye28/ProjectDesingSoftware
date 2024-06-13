@@ -21,10 +21,18 @@ function VerActividad() {
           throw new Error('Error al obtener la actividad');
         }
         const data = await response.json();
+        
+        // Asegurarse de que las fechas sean objetos Date válidos
+        if (data.fechaHoraProgramada) {
+          data.fechaHoraProgramada = new Date(data.fechaHoraProgramada);
+        }
+        if (data.fechaPublicacion) {
+          data.fechaPublicacion = new Date(data.fechaPublicacion);
+        }
+
         setActividad(data);
       } catch (error) {
         console.error('Error al obtener la actividad:', error);
-        // Manejar el error según tu lógica
       }
     };
 
@@ -49,7 +57,6 @@ function VerActividad() {
       window.history.back();
     } catch (error) {
       console.error('Error al eliminar la actividad:', error);
-      // Manejar el error según tu lógica
     }
   };
 
@@ -84,8 +91,17 @@ function VerActividad() {
                 <label className='label'>Fecha y Hora programada:</label>
                 <DatePicker
                   className='input'
-                  selected={new Date(actividad.fechaHoraProgramada)}
+                  selected={actividad.fechaHoraProgramada}
                   dateFormat="dd/MM/yyyy HH:mm"
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
+                <label className='label'>Fecha de Publicación:</label>
+                <DatePicker
+                  className='input'
+                  selected={actividad.fechaPublicacion}
+                  dateFormat="dd/MM/yyyy"
                   readOnly
                 />
               </div>
@@ -113,14 +129,16 @@ function VerActividad() {
                   readOnly
                 />
               </div>
-              <div className='actividadDetails'>
-                <label className='label'>Link de Reunión:</label>
-                <input
-                  className='input'
-                  value={actividad.linkDeReunion}
-                  readOnly
-                />
-              </div>
+              {actividad.modalidad.toLowerCase() === 'virtual' && (
+                <div className='actividadDetails'>
+                  <label className='label'>Link de Reunión:</label>
+                  <input
+                    className='input'
+                    value={actividad.linkDeReunion}
+                    readOnly
+                  />
+                </div>
+              )}
               <div className='actividadDetails'>
                 <label className='label'>Tipo:</label>
                 <input

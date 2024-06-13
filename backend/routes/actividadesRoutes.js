@@ -33,15 +33,17 @@ router.get('/:id/actividades', async (req, res) => {
     }
   });
   
-router.get('/:id', async (req, res) => {
+  router.get('/:id', async (req, res) => {
     try {
-      const actividad = await Actividad.findById(req.params.id);
+      const actividad = await Actividad.findById(req.params.id)
+        .populate('personasResponsables', 'nombre apellido1'); // Poblar con nombre y apellido
       if (!actividad) {
-        return res.status(404).json({ error: 'Actividad no encontrada' });
+        return res.status(404).json({ message: 'Actividad no encontrada' });
       }
       res.json(actividad);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Error al obtener la actividad:', error);
+      res.status(500).json({ error: 'Error al obtener la actividad.' });
     }
   });
 
