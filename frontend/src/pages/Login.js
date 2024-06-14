@@ -27,6 +27,7 @@ function Login() {
           apellido1: data.apellido1,
           carne: data.carne,
           foto: data.foto,
+          id: data._id, 
         }));
         window.location.href = '/MenuPrincipal';
       } else {

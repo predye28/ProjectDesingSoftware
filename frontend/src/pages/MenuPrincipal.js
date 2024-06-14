@@ -8,7 +8,7 @@ function MenuPrincipal() {
   const [persona, setPersona] = useState(null);
 
   const usuario = JSON.parse(localStorage.getItem('usuario'));
-  const { tipo, nombre, sede, carne, foto } = usuario;
+  const { tipo, nombre, sede, carne, foto, identificacion } = usuario;
 
   const handleSalir = () => {
     window.location.href = '/';
@@ -43,6 +43,7 @@ function MenuPrincipal() {
     handleConsultas: () => { window.location.href = '/Consultas'; },
     handleEditarPerfil: () => { window.location.href = `/EditarEstudiante/${carne}`; },
     handleVerActividades: () => { window.location.href = `/MenuActividades`; },
+    handleVerBuzon: () => { window.location.href = `/Buzon/${persona._id}`; },
   };
 
   const buttonsConfig = {
@@ -65,7 +66,7 @@ function MenuPrincipal() {
     ES: [
       { label: 'Editar Perfil', onClick: navigationHandlers.handleEditarPerfil },
       { label: 'Ver Actividades', onClick: navigationHandlers.handleVerActividades }, 
-      { label: 'Ver Buzón', onClick: navigationHandlers.handleEditarPerfil }
+      { label: 'Ver Buzón', onClick: navigationHandlers.handleVerBuzon }
     ],
   };
 

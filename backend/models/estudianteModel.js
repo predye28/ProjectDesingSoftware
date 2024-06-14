@@ -8,7 +8,7 @@ function extendPersonaForEstudiante(baseSchema) {
     ...baseSchema.obj, // Copy base schema fields
     carne: { type: String, required: false },
     foto: { type: String },
-   // nombreUsuario: { type: String, required: true },
+   // nombreUsuario: { type:- String, required: true },
   //  rol: { type: String, required: true },
   //  estado: { type: String, required: true }
   });

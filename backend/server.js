@@ -7,7 +7,7 @@ const planesTrabajoRoutes= require('./routes/planesTrabajoRoutes');
 const actividadesRoutes= require('./routes/actividadesRoutes');
 const equiposTrabajoRoutes =  require('./routes/equiposTrabajoRoutes');
 const estudianteRoutes = require('./routes/estudianteRoutes');
-
+const notificacionesRoutes = require('./routes/notificacionRoutes');
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 
-// Serve static files from the public directory
+//Guardar archivos estaticos
 app.use('/imgEstudiantes', express.static(path.join(__dirname, '../frontend/src/imgEstudiantes')));
 
 
@@ -29,6 +29,7 @@ app.use('/api/estudianteRoutes', estudianteRoutes);
 app.use('/api/planesTrabajoRoutes', planesTrabajoRoutes);
 app.use('/api/actividadesRoutes', actividadesRoutes);
 app.use('/api/equiposTrabajoRoutes', equiposTrabajoRoutes);
+app.use('/api/notificacionRoutes', notificacionesRoutes);
 
 mongoose.connect(process.env.MONG_URI)
   .then(() => {

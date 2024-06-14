@@ -2,28 +2,11 @@ const mongoose = require('mongoose');
 
 
 const notificacionSchema = mongoose.Schema({
-  Titulo: {
-    type: String,
-    required: true
-  },
-  Fecha: {
-    type: Date,
-    default: Date.now
-  },
-  Emisor: {
-    type: String,
-    required: true,
-    maxlength: 100
-  },
-  Contenido: {
-    type: String,
-    required: true
-  },
-  IDactividad: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Actividad',
-    required: true
-  }
+  emisor: { type: String, required: true },
+  fechaHora: { type: Date, default: Date.now },
+  contenido: { type: String, required: true },
+  estado: { type: String, enum: ['leído', 'no leído'], default: 'no leído' },
+  estudianteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Estudiante', required: true }
 });
 
 

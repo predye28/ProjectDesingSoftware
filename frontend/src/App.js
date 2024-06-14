@@ -30,6 +30,7 @@ import ComentarTexto from './pages/ComentarTexto';
 import ComentarEditar from './pages/ComentarEditar';
 import EditarEstudiante from './pages/EditarEstudiante';
 import MenuActividades from './pages/MenuActividades';
+import Buzon from './pages/Buzon';
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="/ComentarEditar" element={<ComentarEditar/>} />
           <Route path="/EditarEstudiante/:id" element={<EditarEstudiante/>} />
           <Route path="/MenuActividades" element={<MenuActividades/>} />
+          <Route path="/Buzon/:estudianteId" element={<Buzon/>} />
         </Routes>
       </div>
       </BrowserRouter>
