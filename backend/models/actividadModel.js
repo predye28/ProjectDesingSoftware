@@ -38,6 +38,10 @@ const actividadSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    tipoActividad: {
+        type: String,
+        required: true
+    },
     fechaPublicacion: {
         type: Date,
         required: true
