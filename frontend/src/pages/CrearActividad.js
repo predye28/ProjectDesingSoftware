@@ -203,7 +203,7 @@ function CrearActividad() {
           
           <div className='columna'>
             <div className='inputContainer'>
-              <label className='label'>Días Previos Recordar:</label>
+              <label className='label'>Días a Recordar:</label>
               <input
                 className='input'
                 type='number'
