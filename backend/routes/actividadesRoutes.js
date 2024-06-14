@@ -62,7 +62,7 @@ router.delete('/:id', async (req, res) => {
 // Ruta para actualizar una actividad
 router.put('/:id', async (req, res) => {
     try {
-      const { nombre, fecha, tipoActividad, estadoActividad } = req.body;
+      const { nombre, fechaHoraProgramada, cantDiasPreviosAnunciar, cantDiasPreviosRecordar, modalidad, linkDeReunion, fechasRecordatorio, personasResponsables, numeroSemana, tipoActividad, estadoActividad } = req.body;
   
       // Verificar si la actividad existe
       const actividadExistente = await Actividad.findById(req.params.id);
@@ -72,9 +72,16 @@ router.put('/:id', async (req, res) => {
   
       // Actualizar los campos de la actividad
       actividadExistente.nombre = nombre;
-      actividadExistente.fecha = fecha;
-      actividadExistente.tipoActividad = tipoActividad;
+      actividadExistente.numeroSemana = numeroSemana;
+      actividadExistente.fechaHoraProgramada = fechaHoraProgramada;
+      actividadExistente.cantDiasPreviosAnunciar = cantDiasPreviosAnunciar;
+      actividadExistente.cantDiasPreviosRecordar = cantDiasPreviosRecordar;
+      actividadExistente.modalidad = modalidad;
+      actividadExistente.linkDeReunion = linkDeReunion;
       actividadExistente.estadoActividad = estadoActividad;
+      actividadExistente.tipoActividad = tipoActividad;
+      actividadExistente.fechasRecordatorio = fechasRecordatorio;
+      actividadExistente.personasResponsables = personasResponsables;
   
       // Guardar la actividad actualizada
       await actividadExistente.save();

@@ -155,6 +155,14 @@ function VerActividad() {
                 )}
               </div>
               <div className='actividadDetails'>
+                <label className='label'>Tipo Actividad:</label>
+                <input
+                  className='input'
+                  value={actividad.tipoActividad}
+                  readOnly
+                />
+              </div>
+              <div className='actividadDetails'>
                 <label className='label'>Modalidad:</label>
                 <input
                   className='input'

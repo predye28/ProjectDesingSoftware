@@ -7,11 +7,11 @@ import Select from 'react-select';
 function CrearActividad() {
   const [numeroSemana, setNumeroSemana] = useState('');
   const [nombre, setNombre] = useState('');
-
+  const [tipoActividad, setTipoActividad] = useState('Clase');
   const [fechaHoraProgramada, setFechaHoraProgramada] = useState(null);
   const [cantDiasPreviosAnunciar, setCantDiasPreviosAnunciar] = useState('');
   const [cantDiasPreviosRecordar, setCantDiasPreviosRecordar] = useState('');
-  const [modalidad, setModalidad] = useState('Online');
+  const [modalidad, setModalidad] = useState('Presencial');
   const [linkDeReunion, setLinkDeReunion] = useState('');
   const [estadoActividad, setEstadoActividad] = useState('Planeada');
   const [profesores, setProfesores] = useState([]);
@@ -86,7 +86,7 @@ function CrearActividad() {
     try {
       const urlParts = window.location.href.split('/');
       const idPlanTrabajo = urlParts[urlParts.length - 1];
-
+      
       const response = await fetch(`/api/actividadesRoutes`, {
         method: 'POST',
         headers: {
@@ -99,6 +99,7 @@ function CrearActividad() {
           cantDiasPreviosAnunciar: cantDiasAnunciarInt,
           cantDiasPreviosRecordar: cantDiasRecordarInt,
           modalidad,
+          tipoActividad,
           linkDeReunion,
           estadoActividad,
           planTrabajo_id: idPlanTrabajo,
@@ -211,6 +212,7 @@ function CrearActividad() {
               />
             </div>
             {renderFechasRecordatorioInputs()}
+            
             <div className='inputContainer'>
               <label className='label'>Modalidad:</label>
               <select
@@ -244,6 +246,15 @@ function CrearActividad() {
                 <option value="Realizada">Realizada</option>
                 <option value="Cancelada">Cancelada</option>
               </select>
+            </div>
+            <div className='actividadDetails'>
+                <label className='label'>Tipo de Actividad:</label>
+                <select className='input' value={tipoActividad} onChange={(e) => setTipoActividad(e.target.value)}>
+                  <option value="Clase">Clase</option>
+                  <option value="Taller">Taller</option>
+                  <option value="Seminario">Seminario</option>
+                  <option value="Otro">Otro</option>
+                </select>
             </div>
             <div className='inputContainer'>
               <label className='label'>Profesor Responsable:</label>
