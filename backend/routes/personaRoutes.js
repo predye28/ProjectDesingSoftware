@@ -2,89 +2,56 @@ const express = require('express');
 const router = express.Router();
 const Persona = require('../models/personaModel');
 const Estudiante = require('../models/estudianteModel');
+const EstudianteDecorator = require('../models/estudianteModel');
+const DecoratorBase = require('../models/estudianteModel');
 const EquipoTrabajo = require('../models/equipoTrabajoModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const mongoose = require('mongoose');
 
-router.post('/auth', async (req, res) => {
-/*
+
+
+router.post('/decorated/auth', async (req, res) => {
   const { correo, contraseña } = req.body;
 
   try {
-    const usuario = await Persona.findOne({ correo });
+    //Se verifica si usuario existe en la coleccion Persona
+    let usuario = await Persona.findOne({ correo });
+    let esEstudiante = false;
 
     if (!usuario) {
-      return res.status(401).json({ error: 'Correo electrónico no encontrado' });
+      //No se encontro en Persona
+      usuario = await Estudiante.findOne({ correo });
+      esEstudiante = true;
     }
 
-    const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
-    if (!contraseñaValida) {
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
-    }
-
-    // Autenticación exitosa
-    res.status(200).json({
-      message: 'Autenticación exitosa',
-      sede: usuario.sede,
-      tipo: usuario.tipo,
-      nombre: usuario.nombre,
-      apellido1: usuario.apellido1,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message  });
-  }
-  */
-
-  const { correo, contraseña } = req.body;
-
-  try {
-    // Check if the user exists in Persona collection
-    let user = await Persona.findOne({ correo });
-    let tipoES = false;
-    if (!user) {
-      // If not found in Persona, check in Estudiante collection
-      user = await Estudiante.findOne({ correo });
-      tipoES = true;
-    }
-
-    if (!user) {//No se encontro ni persona ni estudiante
+    if (!usuario) {
+      //No se encontró ni persona ni estudiante
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    // Check the password
-    let isMatch;
-    if(tipoES === false){
-      isMatch = await bcrypt.compare(contraseña, user.contraseña);
-    }else{
-      isMatch = contraseña === user.contraseña;
+    //Verificar contrasenia
+    let match;
+    if (esEstudiante) {
+      match = contraseña === user.contraseña;
+    } else {
+      match = await bcrypt.compare(contraseña, user.contraseña);
     }
 
-
-    if (!isMatch) {
+    if (!match) {
       return res.status(400).json({ error: 'Contraseña incorrecta' });
     }
 
-    // If everything is correct, return the user data
-    if(tipoES === false){
-      res.json({
-        nombre: user.nombre,
-        apellido1: user.apellido1,
-        sede: user.sede,
-        tipo: user.tipo,
-        correo: user.correo
-      });
+    //Se usa el decorator dependiendo si es estudiante o usuario base(persona)
+    let decoratedUsuario;
+    if (esEstudiante) {
+      decoratedUsuario = new EstudianteDecorator(usuario);
     } else {
-      res.json({
-        nombre: user.nombre,
-        apellido1: user.apellido1,
-        sede: user.sede,
-        tipo: user.tipo,
-        correo: user.correo,
-        carne: user.carne
-      });
+      decoratedUsuario = new DecoratorBase(usuario);
     }
+
+    res.json(decoratedUsuario.toObject());
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -92,7 +59,9 @@ router.post('/auth', async (req, res) => {
 });
 
 
-// personaRoutes.js
+
+
+//personaRoutes.js
 router.post('/registro', async (req, res) => {
   try {
     // Validar que todos los campos estén presentes
@@ -369,6 +338,67 @@ router.post('/equipoTrabajo', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+router.post('/auth', async (req, res) => {
+
+
+  const { correo, contraseña } = req.body;
+
+  try {
+    // Check if the user exists in Persona collection
+    let user = await Persona.findOne({ correo });
+    let tipoES = false;
+    if (!user) {
+      // If not found in Persona, check in Estudiante collection
+      user = await Estudiante.findOne({ correo });
+      tipoES = true;
+    }
+
+    if (!user) {//No se encontro ni persona ni estudiante
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Check the password
+    let isMatch;
+    if(tipoES === false){
+      isMatch = await bcrypt.compare(contraseña, user.contraseña);
+    }else{
+      isMatch = contraseña === user.contraseña;
+    }
+
+
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Contraseña incorrecta' });
+    }
+
+    // If everything is correct, return the user data
+    if(tipoES === false){
+      res.json({
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo
+      });
+    } else {
+      res.json({
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo,
+        carne: user.carne
+      });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+
 
 router.post('/enviar_correo', async (req,res) => {
   const { email, codigo } = req.body;
