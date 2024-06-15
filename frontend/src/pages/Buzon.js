@@ -40,18 +40,21 @@ function Buzon() {
       console.error('Error marking notification as read:', error);
     }
   };
-
+  
   const filteredNotifications = notifications.filter(n => {
     if (filter === 'all') return true;
     return n.estado === filter;
   });
+  const handleVolver = () => {
+    window.location.href = '/MenuPrincipal';
+  };
 
   return (
     <div className="notification-box">
       <div className="filter-buttons">
         <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>Ver Todos</button>
         <button className={filter === 'leído' ? 'active' : ''} onClick={() => setFilter('leído')}>Leidos</button>
-        <button className={filter === 'no leído' ? 'active' : ''} onClick={() => setFilter('no leído')}>No Ledos</button>
+        <button className={filter === 'no leído' ? 'active' : ''} onClick={() => setFilter('no leído')}>No Leidos</button>
       </div>
       <ul className="notifications-list">
         {filteredNotifications.map(notification => (
@@ -72,7 +75,9 @@ function Buzon() {
           </li>
         ))}
       </ul>
+      <button className='volverMenuPlanTrabajo' onClick={handleVolver}>Volver</button>
     </div>
+    
   );
 }
 
