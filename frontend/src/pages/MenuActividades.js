@@ -28,8 +28,7 @@ function MenuActividades() {
   };
 
   const handleVerActividad = (id) => {
-//    window.location.href = `/VerPlanTrabajo/${id}`;
-    window.location.href = `/VerActividad/${id}`;
+    window.location.href = `/InscribirActividad/${id}`;
   };
 //window.location.href = `/VerActividad/${idActividad}`;
   return (

@@ -54,6 +54,10 @@ const actividadSchema = mongoose.Schema({
         type: Date,
         required: true
     }],
+    estudiantesInscritos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Estudiante'
+    }],
 });
 module.exports = mongoose.model('Actividad', actividadSchema);
 

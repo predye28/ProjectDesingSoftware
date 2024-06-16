@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Actividad = require('../models/actividadModel');
 
+
 // Ruta para crear una nueva actividad
 router.post('/', async (req, res) => {
   try {
@@ -91,4 +92,37 @@ router.put('/:id', async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+
+  router.put('/:id/inscribirse', async (req, res) => {
+    try {
+      const actividad = await Actividad.findById(req.params.id);
+      if (!actividad) {
+        return res.status(404).json({ error: 'Actividad no encontrada' });
+      }
+  
+      const { estudianteId } = req.params.id;
+      console.log(estudianteId)
+  
+      // Verificar si el estudianteId está presente y es válido
+      if (!estudianteId) {
+        return res.status(400).json({ error: 'ID de estudiante no proporcionado' });
+      }
+  
+      // Verificar si el estudiante ya está inscrito
+      if (actividad.estudiantesInscritos.includes(estudianteId)) {
+        return res.status(400).json({ error: 'El estudiante ya está inscrito en esta actividad' });
+      }
+  
+      // Inscribir al estudiante
+      actividad.estudiantesInscritos.push(estudianteId);
+  
+      // Guardar la actividad actualizada
+      await actividad.save();
+  
+      res.json({ message: 'Estudiante inscrito correctamente', actividad });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 module.exports = router;

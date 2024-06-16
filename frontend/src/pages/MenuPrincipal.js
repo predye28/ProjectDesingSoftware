@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './MenuPrincipal.css';
+import CambiarFecha from '../components/CambiarFecha';
 
 function MenuPrincipal() {
   // Obtener los datos del usuario desde localStorage
-
   const [persona, setPersona] = useState(null);
+  const [mostrarCambiarFecha, setMostrarCambiarFecha] = useState(false);
 
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   const { tipo, nombre, sede, carne, foto, identificacion } = usuario;
@@ -14,6 +15,9 @@ function MenuPrincipal() {
     window.location.href = '/';
   };
 
+  const toggleCambiarFecha = () => {
+    setMostrarCambiarFecha(!mostrarCambiarFecha);
+  };
 
   useEffect(() => {
     const obtenerPersona = async () => {
@@ -108,8 +112,7 @@ function MenuPrincipal() {
   };
 
   const sedeDescriptiva = getSedeDescriptiva(sede);
-  
-//  const fotoBase64 = foto ? atob(foto) : '';
+
   return (
     <Container className="menu-principal-container">
       <Row className="mb-2">
@@ -122,7 +125,7 @@ function MenuPrincipal() {
           <div className="usuario-info-container">
             {tipo === 'ES' && persona && persona.foto && (
               <div className="foto-container text-center mb-4">
-                <img src={`data:image/jpeg;base64,${persona.foto}`}  alt="Foto del usuario" className="foto-usuario" />
+                <img src={`data:image/jpeg;base64,${persona.foto}`} alt="Foto del usuario" className="foto-usuario" />
               </div>
             )}
             <p className='nombre-usuario'>Nombre: {nombre}</p>
@@ -142,6 +145,22 @@ function MenuPrincipal() {
           </div>
         </Col>
       </Row>
+      {tipo === 'AD' && (
+        <Row className="mb-4">
+          <Col className="text-center">
+            <Button variant="info" onClick={toggleCambiarFecha} block>
+              {mostrarCambiarFecha ? 'Ocultar Cambiar Fecha' : 'Cambiar Fecha del Sistema'}
+            </Button>
+          </Col>
+        </Row>
+      )}
+      {mostrarCambiarFecha && (
+        <Row className="mb-4">
+          <Col>
+            <CambiarFecha />
+          </Col>
+        </Row>
+      )}
       <Row className="mt-4">
         <Col className="text-center">
           <Button variant="danger" onClick={handleSalir} block>Salir</Button>

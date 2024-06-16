@@ -29,6 +29,7 @@ function Login() {
           foto: data.foto,
           id: data._id, 
         }));
+
         window.location.href = '/MenuPrincipal';
       } else {
         const data = await response.json();

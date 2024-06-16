@@ -375,6 +375,7 @@ router.post('/auth', async (req, res) => {
     // If everything is correct, return the user data
     if(tipoES === false){
       res.json({
+        _id: user._id,
         nombre: user.nombre,
         apellido1: user.apellido1,
         sede: user.sede,
@@ -460,7 +461,6 @@ router.post('/enviar_correo', async (req,res) => {
 
 router.get('/profesores', async (req, res) => {
   try {
-    console.log("aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     const profesoresPorSede = {};
     const sedes = ['SJ', 'CA', 'SC', 'LM', 'AL'];
     
