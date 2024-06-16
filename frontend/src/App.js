@@ -21,6 +21,7 @@ import VerPlanTrabajo from './pages/VerPlanTrabajo';
 import EditarPlanTrabajo from './pages/EditarPlanTrabajo';
 import CrearActividad from './pages/CrearActividad';
 import VerActividad from './pages/VerActividad';
+import InscribirActividad from './pages/InscribirActividad';
 import ModificarActividad from './pages/ModificarActividad';
 import Consultas from './pages/Consultas';
 import ConsultaEstudiante from './pages/ConsultaEstudiante';
@@ -29,6 +30,9 @@ import Comentar from './pages/Comentar';
 import ComentarTexto from './pages/ComentarTexto';
 import ComentarEditar from './pages/ComentarEditar';
 import EditarEstudiante from './pages/EditarEstudiante';
+import MenuActividades from './pages/MenuActividades';
+import Buzon from './pages/Buzon';
+
 
 function App() {
   return (
@@ -57,6 +61,7 @@ function App() {
           <Route path="/EditarPlanTrabajo" element={<EditarPlanTrabajo />} />
           <Route path="/CrearActividad/:id" element={<CrearActividad />} />
           <Route path="/VerActividad/:id" element={<VerActividad />} />
+          <Route path="/InscribirActividad/:id" element={<InscribirActividad />} />
           <Route path="/ModificarActividad/:id" element={<ModificarActividad />} />
           <Route path="/Consultas" element={<Consultas />} />
           <Route path="/ConsultaEstudiante" element={<ConsultaEstudiante />} />
@@ -65,6 +70,8 @@ function App() {
           <Route path="/ComentarTexto" element={<ComentarTexto />} />
           <Route path="/ComentarEditar" element={<ComentarEditar/>} />
           <Route path="/EditarEstudiante/:id" element={<EditarEstudiante/>} />
+          <Route path="/MenuActividades" element={<MenuActividades/>} />
+          <Route path="/Buzon/:estudianteId" element={<Buzon/>} />
         </Routes>
       </div>
       </BrowserRouter>

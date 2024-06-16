@@ -70,21 +70,40 @@ function PlanTrabajo() {
   return (
     <div>
       <div className='menuPersona'>
-        <label className='titulo'>Plan de Trabajo</label>
-        <label style={{ position: 'absolute', top: 150, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Nombre del Plan de Trabajo: </label>
-        <label style={{ position: 'absolute', top: 250, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Fecha de Inicio: </label>
-        <label style={{ position: 'absolute', top: 350, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}> Fecha de Fin: </label>
-
-        <input style={{ position: 'absolute', top: 150, left: 350, fontSize: 20 }} value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        <input style={{ position: 'absolute', top: 250, left: 350, fontSize: 20 }} type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} />
-        <input style={{ position: 'absolute', top: 350, left: 350, fontSize: 20 }} type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} />
-
-        <button className='registrarPlan' onClick={handleRegistrar}>Registrar</button>
-        <button className='volverPlanTrabajo' onClick={handleVolver}>Volver</button>
+        <label className='title'>Registrar Plan de Trabajo</label>
+        <div className='formContainer'>
+          <div className='inputContainer'>
+            <label className='label'>Nombre del Plan de Trabajo:</label>
+            <input
+              className='input'
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+            />
+          </div>
+          <div className='inputContainer'>
+            <label className='label'>Fecha de Inicio:</label>
+            <input
+              className='input'
+              type="date"
+              value={fechaInicio}
+              onChange={(e) => setFechaInicio(e.target.value)}
+            />
+          </div>
+          <div className='inputContainer'>
+            <label className='label'>Fecha de Fin:</label>
+            <input
+              className='input'
+              type="date"
+              value={fechaFin}
+              onChange={(e) => setFechaFin(e.target.value)}
+            />
+          </div>
+        </div>
+        <button className='button' onClick={handleRegistrar}>Registrar</button>
+        <button className='button' onClick={handleVolver}>Volver</button>
       </div>
     </div>
   );
 }
 
 export default PlanTrabajo;
-

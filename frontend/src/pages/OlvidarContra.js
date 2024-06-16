@@ -24,10 +24,12 @@ function OlvidarContra() {
       console.error('Failed to send email', error);
     }
   };
-
-  const handleRestablecer = () => {
+/*
+  const handleRestablecer = async () => {
+  try{
     if (codigoUsuario === codigo) {
       // Call API to update the password with newPassword
+      const response = await axios.put(`/api/personaRoutes/editarContra/${email}`, { newPassword });
       console.log("Updating password with new value:", newPassword);
       alert('La contraseña ha sido cambiada');
       window.location.href = '/';
@@ -39,6 +41,30 @@ function OlvidarContra() {
     else {
       alert('Codigo incorrecto!');
       window.location.href = '/';
+    }
+  };
+  */
+
+  const handleRestablecer = async () => {
+    try {
+
+        if (codigoUsuario === codigo) {
+          const response = await axios.put(`/api/personaRoutes/editarContra/${email}`, { newPassword });
+          console.log(response.data.message); // Assuming the API returns a message upon success
+          alert('La contraseña ha sido cambiada');
+          window.location.href = '/';
+
+      } else if(newPassword === '')
+        {
+          alert('Debe ingresar contraseña');
+        }
+      else {
+        alert('Codigo incorrecto!');
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Failed to update password', error);
+      alert('Error al restablecer la contraseña');
     }
   };
 

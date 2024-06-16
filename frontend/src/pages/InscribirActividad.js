@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './VerActividad.css';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
-function VerActividad() {
+function InscribirActividad() {
   const { id } = useParams();
   const [actividad, setActividad] = useState(null);
-
-  const usuario = JSON.parse(localStorage.getItem('usuario'));
-  const { tipo } = usuario;
 
   useEffect(() => {
     const fetchActividad = async () => {
@@ -24,7 +18,7 @@ function VerActividad() {
           throw new Error('Error al obtener la actividad');
         }
         const data = await response.json();
-        
+
         // Asegurarse de que las fechas sean objetos Date válidos
         if (data.fechaHoraProgramada) {
           data.fechaHoraProgramada = new Date(data.fechaHoraProgramada);
@@ -45,43 +39,37 @@ function VerActividad() {
     fetchActividad();
   }, [id]);
 
+  const handleInscribirse = async () => {
+    console.log(localStorage.getItem('usuario')._id )
+    try {
+      const response = await fetch(`/api/actividadesRoutes/${id}/inscribirse`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          estudianteId: localStorage.getItem('usuario')._id  // Asegúrate de obtener el id del estudiante de manera correcta
+        })
+      });
+      if (!response.ok) {
+        throw new Error('Error al inscribirse en la actividad');
+      }
+      alert('¡Inscripción exitosa!');
+      window.history.back();
+    } catch (error) {
+      console.error('Error al inscribirse en la actividad:', error);
+      alert('Hubo un error al intentar inscribirse en la actividad.');
+    }
+  };
+
   const handleVolver = () => {
     window.history.back();
-  };
-
-  const handleEliminarActividad = async () => {
-    if (tipo === 'PGC') {
-      try {
-        const response = await fetch(`/api/actividadesRoutes/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Error al eliminar la actividad');
-        }
-        window.history.back();
-      } catch (error) {
-        console.error('Error al eliminar la actividad:', error);
-      }
-    } else {
-      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
-    }
-  };
-
-  const handleModificarActividad = () => {
-    if (tipo === 'PGC') {
-      window.location.href = `/ModificarActividad/${id}`;
-    } else {
-      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
-    }
   };
 
   return (
     <div>
       <div className='menuPersona'>
-        <label className='title'>Actividad</label>
+        <label className='title'>Inscripción en Actividad</label>
         {actividad ? (
           <div className="actividadDetailsContainer">
             <div className="actividadCard">
@@ -103,19 +91,17 @@ function VerActividad() {
               </div>
               <div className='actividadDetails'>
                 <label className='label'>Fecha y Hora programada:</label>
-                <DatePicker
+                <input
                   className='input'
-                  selected={actividad.fechaHoraProgramada}
-                  dateFormat="dd/MM/yyyy HH:mm"
+                  value={new Date(actividad.fechaHoraProgramada).toLocaleString()}
                   readOnly
                 />
               </div>
               <div className='actividadDetails'>
                 <label className='label'>Fecha de Publicación:</label>
-                <DatePicker
+                <input
                   className='input'
-                  selected={actividad.fechaPublicacion}
-                  dateFormat="dd/MM/yyyy"
+                  value={new Date(actividad.fechaPublicacion).toLocaleString()}
                   readOnly
                 />
               </div>
@@ -141,10 +127,9 @@ function VerActividad() {
                   <ul>
                     {actividad.fechasRecordatorio.map((fecha, index) => (
                       <li key={index}>
-                        <DatePicker
+                        <input
                           className='input'
-                          selected={fecha}
-                          dateFormat="dd/MM/yyyy"
+                          value={new Date(fecha).toLocaleString()}
                           readOnly
                         />
                       </li>
@@ -188,30 +173,16 @@ function VerActividad() {
                   readOnly
                 />
               </div>
-              <div className='actividadDetails'>
-                <label className='label'>Profesores Responsables:</label>
-                {actividad.personasResponsables && actividad.personasResponsables.length > 0 ? (
-                  <ul>
-                    {actividad.personasResponsables.map((profesor) => (
-                      <li key={profesor._id}>{`${profesor.nombre} ${profesor.apellido1}`}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No hay profesores responsables asignados.</p>
-                )}
-              </div>
             </div>
           </div>
         ) : (
           <p>Cargando información de la actividad...</p>
         )}
         <button className='volverVerActividad' onClick={handleVolver}>Volver</button>
-        <button className='comentarActividad'>Comentar Actividad</button>
-        <button className='eliminarActividad' onClick={handleEliminarActividad}>Eliminar Actividad</button>
-        <button className='modificarActividad' onClick={handleModificarActividad}>Modificar Actividad</button>
+        
       </div>
     </div>
   );
 }
 
-export default VerActividad;
+export default InscribirActividad;

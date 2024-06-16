@@ -7,6 +7,10 @@ function VerPlanTrabajo() {
   const [planTrabajo, setPlanTrabajo] = useState(null);
   const [actividades, setActividades] = useState([]);
 
+  // Obtener el tipo de usuario desde localStorage
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo } = usuario;
+
   useEffect(() => {
     const fetchPlanTrabajo = async () => {
       try {
@@ -44,21 +48,34 @@ function VerPlanTrabajo() {
   }, [id]);
 
   const handleEliminarPlanTrabajo = async () => {
-    try {
-      const response = await fetch(`/api/planesTrabajoRoutes/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
+    if (tipo === 'PGC') {
+      try {
+        const response = await fetch(`/api/planesTrabajoRoutes/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Error al eliminar el plan de trabajo');
         }
-      });
-      if (!response.ok) {
-        throw new Error('Error al eliminar el plan de trabajo');
+        // Redirigir al usuario de regreso al menú de planes de trabajo
+        window.location.href = '/MenuPlanTrabajo';
+      } catch (error) {
+        console.error('Error al eliminar el plan de trabajo:', error);
+        // Manejar el error según tu lógica
       }
-      // Redirigir al usuario de regreso al menú de planes de trabajo
-      window.location.href = '/MenuPlanTrabajo';
-    } catch (error) {
-      console.error('Error al eliminar el plan de trabajo:', error);
-      // Manejar el error según tu lógica
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
+    }
+  };
+
+  const handleCrearActividad = () => {
+    if (tipo === 'PGC') {
+      // Redirigir al usuario a la página de creación de actividad con el ID del plan de trabajo
+      window.location.href = `/CrearActividad/${id}`;
+    } else {
+      alert('Solo el Profesor Guia Coordinador puede realizar esta acción.');
     }
   };
 
@@ -67,31 +84,32 @@ function VerPlanTrabajo() {
     window.location.href = `/VerActividad/${idActividad}`;
   };
 
-  const handleCrearActividad = () => {
-    // Redirigir al usuario a la página de creación de actividad con el ID del plan de trabajo
-    window.location.href = `/CrearActividad/${id}`;
-  };
-
   return (
     <div>
       <div className='menuPersona'>
-        <label className='titulo'>Detalles del Plan de Trabajo</label>
+        <h1 className='title'>Detalles del Plan de Trabajo</h1>
         {planTrabajo ? (
-          <div>
-            <label style={{ position: 'absolute', top: 150, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Nombre del Plan de Trabajo:</label>
-            <label style={{ position: 'absolute', top: 150, left: 350, fontSize: 20 }}>{planTrabajo.nombre}</label>
-            <label style={{ position: 'absolute', top: 200, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha de Inicio:</label>
-            <label style={{ position: 'absolute', top: 200, left: 350, fontSize: 20 }}>{planTrabajo.fechaInicio}</label>
-            <label style={{ position: 'absolute', top: 250, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Fecha de Fin:</label>
-            <label style={{ position: 'absolute', top: 250, left: 350, fontSize: 20 }}>{planTrabajo.fechaFin}</label>
+          <div className="planDetailsContainer">
+          <div className="planDetails">
+            <label>Nombre del Plan de Trabajo:</label>
+            <label>{planTrabajo.nombre}</label>
           </div>
+          <div className="planDetails">
+            <label>Fecha de Inicio:</label>
+            <label>{planTrabajo.fechaInicio}</label>
+          </div>
+          <div className="planDetails">
+            <label>Fecha de Fin:</label>
+            <label>{planTrabajo.fechaFin}</label>
+          </div>
+        </div>
         ) : (
           <p>Cargando información del plan de trabajo...</p>
         )}
         
-        <div>
-          <label style={{ position: 'absolute', top: 300, left: 50, fontSize: 20, fontWeight: 'bold', color: 'white' }}>Actividades:</label>
-          <div>
+        <div className="actividadesContainer">
+          <label className="actividadesTitle">Actividades:</label>
+          <div className="actividadesList">
             {actividades.map((actividad) => (
               <button
                 key={actividad._id}

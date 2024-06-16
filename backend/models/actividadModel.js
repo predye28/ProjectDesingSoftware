@@ -1,19 +1,23 @@
 const mongoose = require('mongoose');
 
 const actividadSchema = mongoose.Schema({
+    numeroSemana: {
+        type: String,
+        required: true
+    },
     nombre: {
         type: String,
         required: true
     },
-    fecha: {
+    fechaHoraProgramada: {
         type: Date,
         required: true
     },
-    tipoActividad: {
+    cantDiasPreviosAnunciar: {
         type: String,
         required: true
     },
-    estadoActividad: {
+    cantDiasPreviosRecordar: {
         type: String,
         required: true
     },
@@ -21,7 +25,39 @@ const actividadSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'PlanTrabajo',
         required: true
-    }
+    },
+    modalidad: {
+        type: String,
+        required: true
+    },
+    linkDeReunion: {
+        type: String,
+        required: false
+    },
+    estadoActividad: {
+        type: String,
+        required: true
+    },
+    tipoActividad: {
+        type: String,
+        required: true
+    },
+    fechaPublicacion: {
+        type: Date,
+        required: true
+    },
+    personasResponsables: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Persona'
+    }],
+    fechasRecordatorio: [{
+        type: Date,
+        required: true
+    }],
+    estudiantesInscritos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Estudiante'
+    }],
 });
 module.exports = mongoose.model('Actividad', actividadSchema);
 

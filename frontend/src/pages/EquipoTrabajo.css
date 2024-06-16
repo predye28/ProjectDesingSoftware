@@ -1,120 +1,47 @@
+.equipo-trabajo-container {
+    color: var(--color-verde-oscuro);
+    padding: 20px;
+  }
   
-.selectSJ{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 100px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectCA{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 170px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectSC{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 240px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectLI{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 310px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectAL{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 380px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectCoordinador{
-    position: absolute;
-    width: 250px;
-    height: 40px;
-    left: 300px;
-    top: 450px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectAnno{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 600px;
-    top: 450px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-  
-.selectSemestre{
-    position: absolute;
-    width: 200px;
-    height: 40px;
-    left: 800px;
-    top: 450px;
-  
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-
-.registrarEquipo{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+  .titulo {
     text-align: center;
-}
-
-.volverEquipo {
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+    color: var(--color-marron-oscuro);
+    margin-bottom: 20px;
+  }
+  
+  .form-container {
+    background-color: var(--color-beige);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .form-label {
+    color: var(--color-marron-oscuro);
+  }
+  
+  .form-control {
+    background-color: var(--color-beige-claro);
+    border: 1px solid var(--color-marron);
+    color: var(--color-verde-oscuro);
+  }
+  
+  .botones-container {
+    padding: 20px;
     text-align: center;
   }
+  
+  .registrarEquipo {
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-blanco);
+    margin-right: 10px;
+  }
+  
+  .volverEquipo {
+    background-color: var(--color-marron-oscuro);
+    color: var(--color-blanco);
+  }
+  

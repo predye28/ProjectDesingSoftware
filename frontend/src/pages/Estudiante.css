@@ -1,91 +1,51 @@
-.tituloPersona {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    background-color: #496989;
-    height: 80px;
-    color: white;
-    text-align: center; 
-    padding-left: 20px; 
-}
-
-.ordenAlfa{
-    position: fixed;
-    bottom: 20px;
-    left: 400px;
-    top: 100px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.carnet{
-    position: fixed;
-    bottom: 20px;
-    left: 600px;
-    top: 100px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.tabla {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFFFFF;
-    position: absolute;
-    top: 200px; 
-    left: 300px; 
-    padding: 4px;
-    width: 40%; 
-    height: 40vh; 
-}
-
-.selectCampus{
-    position: absolute;
-    width: 170px;
-    height: 50px;
-    left: 800px;
-    top: 100px;
+.estudiante-container {
+    color: var(--color-verde-oscuro);
+    padding: 20px;
+  }
   
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-}
-
-
-.registrarEstudiante{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+  .titulo {
     text-align: center;
-}
-
-.volverEstudiante{
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+    color: var(--color-marron-oscuro);
+    margin-bottom: 20px;
+  }
+  
+  .form-container {
+    background-color: var(--color-beige);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .form-control,
+  .form-select {
+    background-color: var(--color-beige-claro);
+    border: 1px solid var(--color-marron);
+    color: var(--color-verde-oscuro);
+  }
+  
+  .list-container {
+    margin-bottom: 20px;
+  }
+  
+  .scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .pointer-cursor {
+    cursor: pointer;
+  }
+  
+  .upload-container {
+    background-color: var(--color-beige);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .botones-container {
     text-align: center;
-}
+  }
+  

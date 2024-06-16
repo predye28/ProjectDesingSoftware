@@ -1,38 +1,58 @@
-
-.tablaPlanes {
+/* MenuPlanTrabajo.css */
+.menuPersona {
+    background-color: var(--color-beige-claro);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: #FFFFFF;
-    position: absolute; /* Cambiado de fixed a absolute */
-    top: 150px; /* Posición desde la parte superior */
-    left: 100px; /* Posición desde la parte izquierda */
-    padding: 4px;
-    width: 70%; /* Reducir el ancho al 50% */
-    height: 50vh; /* Reducir la altura al 50% de la ventana */
-}
-
-.volverMenuPlanTrabajo{
-    position: fixed;
-    bottom: 20px; 
-    left: 20px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
+    padding: 20px;
+  }
+  
+  .titulo {
+    font-size: 2.5rem;
+    color: var(--color-verde-oscuro);
+    border-bottom: 2px solid var(--color-marron-oscuro);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
-}
-
-.crearPlan{
-    position: fixed;
-    bottom: 20px; 
-    left: 500px; 
-    width: 150px;
-    height: 50px;
-    background: linear-gradient(180deg, #A8CD9F 0%, rgba(126, 104, 72, 0.765625) 91.15%, rgba(129, 105, 70, 0.698857) 95.31%, rgba(162, 117, 55, 0) 99.99%, rgba(144, 110, 63, 0.387316) 100%);
-    border-radius: 20px;
-    color: #FFFFFF;
-    text-align: center;
-}
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+    letter-spacing: 1px;
+  }
+  
+  .tablaPlanes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .tablaPlanes button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tablaPlanes button:hover {
+    background-color: var(--color-marron-oscuro);
+  }
+  
+  .crearPlan, .volverMenuPlanTrabajo {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--color-marron);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .crearPlan:hover, .volverMenuPlanTrabajo:hover {
+    background-color: var(--color-marron-oscuro);
+  }
+  

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './Consultas.css';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 
 
 function Consultas() {
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const { tipo, correo} = usuario;
+
+
+  const [nombrePersona, setNombrePersona] = useState('');
   const [año, setAnio] = useState('');
   const [semestre, setSemestre] = useState('');
+  const [sede, setSede] = useState('');
   const [consultas, setconsultas] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [consultarPlanTrabajoClicked, setConsultarPlanTrabajoClicked] = useState(false);
@@ -34,7 +41,8 @@ const handleEditar = (equipo) => {
     window.location.href = `/EditarPersona/${equipo._id}`;
   }
   else if(consultarEstudiantesClicked){
-    window.location.href = `/EditarPersona/${equipo.identificacion}`;
+    window.location.href = `/EditarEstudiante/${equipo.identificacion}`;
+    //window.location.href = `/EditarPersona/${equipo.identificacion}`;
   }
 };
 
@@ -72,7 +80,15 @@ useEffect(() => {
   .catch(error => console.error('Error fetching estudiantes:', error));
   }
   */
-}, [año, semestre, consultarPlanTrabajoClicked]);//año, semestre
+  fetch(`/api/personaRoutes/${correo}/sede`)
+  .then(response => response.json())
+  .then(data => {
+    setSede(data.sede); // Set the user's sede
+   // fetchStudentsBySede(data.sede); // Fetch students once we have the 'sede'
+  })
+  .catch(error => console.error('Error fetching sede:', error));
+
+}, [correo]);//año, semestre
 
 const handleConsultarPlanTrabajoClick = () => {
   setConsultarPlanTrabajoClicked(true);
@@ -93,11 +109,15 @@ const handleConsultarEstudiantesClick = () => {
   setConsultarPlanTrabajoClicked(false);
 }
 
+
+
 const handleProfesores = () => {
+  handleConsultProfesoresClick();
   fetch('/api/personaRoutes/listar_estudiantes')
   .then(response => response.json())
   .then(data => {
-    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    //const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "AD" || estudiante.tipo === "PGC" || estudiante.tipo === "PG"));
+    const estudiantesFiltrados = data.filter(estudiante => (estudiante.tipo === "PG" && estudiante.sede === sede));
     estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
     setconsultas(estudiantesFiltrados);
     setExcelVisible(true); 
@@ -106,6 +126,7 @@ const handleProfesores = () => {
 }
 
 const handlePlanes = () =>{
+  handleConsultarPlanTrabajoClick();
   fetch('/api/planesTrabajoRoutes')
   .then(response => response.json())
   .then(data => setconsultas(data))//          .then(data => setPlanesTrabajo(data))
@@ -114,10 +135,13 @@ const handlePlanes = () =>{
 }
 
 const handleBuscarAlfa = ()=> {
+  handleConsultarEstudiantesClick();
+    // Hacer una solicitud al servidor para obtener el nombre de la persona asociada con el correo electrónico
   fetch('/api/personaRoutes/listar_estudiantes')
 .then(response => response.json())
 .then(data => {
-  const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+  //const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+  const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES" && estudiante.sede === sede);
   estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
   setconsultas(estudiantesFiltrados);
   setExcelVisible(true); 
@@ -126,6 +150,21 @@ const handleBuscarAlfa = ()=> {
 
 }
 
+
+ const handleBuscarESTodos = () => {
+  handleConsultarEstudiantesClick();
+  fetch('/api/personaRoutes/listar_estudiantes')
+  .then(response => response.json())
+  .then(data => {
+    //const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+    const estudiantesFiltrados = data.filter(estudiante => estudiante.tipo === "ES");
+    estudiantesFiltrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    setconsultas(estudiantesFiltrados);
+    setExcelVisible(true); 
+  })
+  .catch(error => console.error('Error fetching estudiantes:', error));
+  
+ }
 
 const handleDescargarExcel = () =>{
   const wb = XLSX.utils.book_new();
@@ -151,56 +190,61 @@ const handleDescargarExcel = () =>{
   document.body.removeChild(link);
 }
 
-  return (
-    <div>
-      <div className='menuPersona'>
-        <label className='titulo'>Consultas</label>
-        <label style = {{position: 'absolute', top: 150, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>{/* Seleccione el año que desea consultar: \n Seleccione el periodo\n*/}
-        <label style = {{position: 'absolute', top: 250, left: 30, fontSize: 20, fontWeight: 'bold', color:'white'}} > </label>
-        
+  const buttonsConfig = {
+    AD: [
+      //{ label: 'Consultar Plan de Trabajo', onClick: handlePlanes, className: 'consultarPlanTrabajo' },
+      { label: 'Consultar Profesores por sede', onClick: handleProfesores, className: 'consultarProfesores' },
+      { label: 'Lista de Estudiantes', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+    PG: [
+      { label: 'Consultar Plan de Trabajo', onClick: handlePlanes, className: 'consultarPlanTrabajo' },
+      { label: 'Listar todos los Estudiantes', onClick: handleBuscarESTodos, className: 'listaEstudiantesTodos' },
+      { label: 'Lista Estudiantes x Sede', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+    PGC: [
+      { label: 'Consultar Profesores', onClick: handleProfesores, className: 'consultarProfesores' },
+      { label: 'Lista de Estudiantes', onClick: handleBuscarAlfa, className: 'listaEstudiantes' }
+    ],
+  };
 
-        {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className='scrollable-list-container'>
-          <ul className='scrollable-list'>
-            {consultas.length > 0 ? (
-              consultas.map(equipo => (
-                <li key={equipo._id} className='scrollable-list-item pointer-cursor' onClick={() => handleEditar(equipo)}>{equipo.nombre}</li>
-              ))
-            ) : (
-              <li className='scrollable-list-item'></li>
-            )}
-          </ul>
-        </div>
-      )}
-  {/* 
-        <select className='selectAño' onChange={handleAnioChange}>
-            <option value="">_</option>
-           
-            <option value="2024">2024</option>
-            <option value="2025">2025</option>
-        
-        </select>    
-        */
-          }
- {/* 
-        <select className='selectPeriodo' onChange={handleSemestreChange}>
-            <option value="">_</option>
-           
-            <option value="1">Semestre 1</option>
-            <option value="2">Semestre 2</option>
-          
-        </select>  */
-          }
-        
-        <button className='listaEstudiantes' onClick={handleBuscarAlfa}>Lista de estudiantes</button>
-        <button className='consultarProfesores' onClick={handleProfesores}>Consultar Profesores</button>
-        <button className='consultarPlanTrabajo' onClick={handlePlanes}>Consultar Plan de Trabajo</button>
-        {excelVisible && <button className='descargarExcel' onClick={handleDescargarExcel}>Descargar Excel</button>}
-        <button className='volverConsultas' onClick={handleVolver}> Volver</button>
-      </div>
-    </div>
+  const buttons = buttonsConfig[tipo] || []
+
+  return (
+    <Container className="consultas-container fullscreen-container">
+      <Row className="mb-4">
+        <Col>
+          <h1 className="text-center mb-4 title">Consultas</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3} className="d-flex flex-column align-items-start">
+          {buttons.map((button, index) => (
+            <Button key={index} variant="outline-dark" className="menu-button mb-3" onClick={button.onClick} block>
+              {button.label}
+            </Button>
+          ))}
+          {excelVisible && <Button variant="outline-dark" className="menu-button mb-3" onClick={handleDescargarExcel} block>Descargar Excel</Button>}
+          <Button variant="danger" className="volver-button" onClick={handleVolver} block>Volver</Button>
+        </Col>
+        <Col md={9}>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="scrollable-list-container">
+              <ul className="scrollable-list">
+                {consultas.length > 0 ? (
+                  consultas.map(equipo => (
+                    <li key={equipo._id} className="scrollable-list-item pointer-cursor" onClick={() => handleEditar(equipo)}>{equipo.nombre}</li>
+                  ))
+                ) : (
+                  <li className="scrollable-list-item">No hay datos</li>
+                )}
+              </ul>
+            </div>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

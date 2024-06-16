@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import './MenuPlanTrabajo.css';
+import './MenuActividades.css';
 
-function MenuPlanTrabajo() {
-  const [planesTrabajo, setPlanesTrabajo] = useState([]);
+function MenuActividades() {
+  const [actividades, setActividades] = useState([]);
 
   // Obtener el tipo de usuario desde localStorage
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   const { tipo } = usuario;
 
   useEffect(() => {
-    fetch('/api/planesTrabajoRoutes')
+    fetch('/api/actividadesRoutes/listar_actividades')
       .then(response => response.json())
-      .then(data => setPlanesTrabajo(data))
+      .then(data => setActividades(data))
       .catch(error => console.error('Error fetching planes de trabajo:', error));
   }, []);
 
@@ -27,17 +27,17 @@ function MenuPlanTrabajo() {
     }
   };
 
-  const handleVerPlanTrabajo = (id) => {
-    window.location.href = `/VerPlanTrabajo/${id}`;
+  const handleVerActividad = (id) => {
+    window.location.href = `/InscribirActividad/${id}`;
   };
-
+//window.location.href = `/VerActividad/${idActividad}`;
   return (
     <div>
       <div className='menuPersona'>
-        <h1 className='title'> Planes de Trabajo</h1>
+        <h1 className='title'> Actividades</h1>
         <div className='tablaPlanes'>
-          {planesTrabajo.map(plan => (
-            <button key={plan._id} onClick={() => handleVerPlanTrabajo(plan._id)}>{plan.nombre}</button>
+          {actividades.map(actividad => (
+            <button key={actividad._id} onClick={() => handleVerActividad(actividad._id)}>{actividad.nombre}</button>
           ))}
         </div>
         <button className='crearPlan' onClick={handleCrearPlanTrabajo}>Registrar Plan de Trabajo</button>
@@ -47,4 +47,4 @@ function MenuPlanTrabajo() {
   );
 }
 
-export default MenuPlanTrabajo;
+export default MenuActividades;

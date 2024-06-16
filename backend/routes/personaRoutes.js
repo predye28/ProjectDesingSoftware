@@ -1,48 +1,73 @@
 const express = require('express');
 const router = express.Router();
 const Persona = require('../models/personaModel');
+const Estudiante = require('../models/estudianteModel');
+const EstudianteDecorator = require('../models/estudianteModel');
+const DecoratorBase = require('../models/estudianteModel');
 const EquipoTrabajo = require('../models/equipoTrabajoModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const mongoose = require('mongoose');
 
-router.post('/auth', async (req, res) => {
+
+
+router.post('/decorated/auth', async (req, res) => {
   const { correo, contraseña } = req.body;
 
   try {
-    const usuario = await Persona.findOne({ correo });
+    //Se verifica si usuario existe en la coleccion Persona
+    let usuario = await Persona.findOne({ correo });
+    let esEstudiante = false;
 
     if (!usuario) {
-      return res.status(401).json({ error: 'Correo electrónico no encontrado' });
+      //No se encontro en Persona
+      usuario = await Estudiante.findOne({ correo });
+      esEstudiante = true;
     }
 
-    const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
-    if (!contraseñaValida) {
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
+    if (!usuario) {
+      //No se encontró ni persona ni estudiante
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    // Autenticación exitosa
-    res.status(200).json({ message: 'Autenticación exitosa' });
+    //Verificar contrasenia
+    let match;
+    if (esEstudiante) {
+      match = contraseña === user.contraseña;
+    } else {
+      match = await bcrypt.compare(contraseña, user.contraseña);
+    }
+
+    if (!match) {
+      return res.status(400).json({ error: 'Contraseña incorrecta' });
+    }
+
+    //Se usa el decorator dependiendo si es estudiante o usuario base(persona)
+    let decoratedUsuario;
+    if (esEstudiante) {
+      decoratedUsuario = new EstudianteDecorator(usuario);
+    } else {
+      decoratedUsuario = new DecoratorBase(usuario);
+    }
+
+    res.json(decoratedUsuario.toObject());
   } catch (error) {
-    res.status(500).json({ error: error.message  });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
 
 
 
 
-
-
-
-// personaRoutes.js
+//personaRoutes.js
 router.post('/registro', async (req, res) => {
   try {
     // Validar que todos los campos estén presentes
-    const { identificacion, nombre, apellido1, apellido2, celular, correo, contraseña, numeroOficina, sede, tipo } = req.body;
+    const { identificacion, nombre, apellido1, apellido2, celular, correo, contraseña, sede, tipo } = req.body;
    
-    if (!identificacion || !nombre || !apellido1 || !apellido2 || !celular || !correo || !contraseña || !numeroOficina || !sede || !tipo) {
-      console.log(identificacion);
+    if (!identificacion || !nombre || !apellido1 || !apellido2 || !celular || !correo || !contraseña || !sede || !tipo) {
       return res.status(400).json({ error: 'Por favor complete todos los camposs' });
     }
 
@@ -71,7 +96,6 @@ router.post('/registro', async (req, res) => {
       celular,
       correo,
       contraseña: hashedPassword, // Guardar la contraseña hasheada
-      numeroOficina,
       sede,
       tipo
     });
@@ -173,6 +197,51 @@ router.put('/editar/:identificacion', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/*
+router.put('/editarContra/:correo', async (req, res) => {
+  try {
+    const { nombre, apellido1, apellido2, correo, celular, sede, tipo, contraseña } = req.body;
+    const personaActualizada = await Estudiante.findOneAndUpdate(
+      { correo: req.params.correo },
+      { nombre, apellido1, apellido2, correo, celular, sede, tipo, contraseña },
+      { new: true }
+    );
+    res.json(personaActualizada);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+*/
+
+router.put('/editarContra/:correo', async (req, res) => {
+  try {
+    const { correo } = req.params;
+    const { newPassword } = req.body;
+
+    // Find the student by email
+    const estudiante = await Estudiante.findOne({ correo });
+
+    // If student not found, return an error
+    if (!estudiante) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Update the password
+    estudiante.contraseña = newPassword;
+
+    // Save the updated student
+    await estudiante.save();
+
+    // Return a success message
+    return res.json({ message: 'Contraseña cambiada exitosamente' });
+  } catch (error) {
+    // Return an error message
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+
 router.get('/:correo/id', async (req, res) => {
   try {
     const { correo } = req.params;
@@ -181,6 +250,19 @@ router.get('/:correo/id', async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
     res.json({ id: persona._id });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/:correo/sede', async (req, res) => {
+  try {
+    const { correo } = req.params;
+    const persona = await Persona.findOne({ correo }, 'sede'); // Changed to return 'sede'
+    if (!persona) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ sede: persona.sede });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -197,6 +279,18 @@ router.get('/profesores/:sede', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get('/profesores/:sede', async (req, res) => {
+  try {
+    const { sede } = req.params;
+    // Filtrar por sede y tipo de persona
+    const profesores = await Persona.find({ sede, tipo: 'PGC' }, 'nombre apellido1 _id');
+    res.json(profesores);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/profesoresPGC/:tipo', async (req, res) => {
   try {
     const { tipo } = req.params;
@@ -244,6 +338,68 @@ router.post('/equipoTrabajo', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+router.post('/auth', async (req, res) => {
+
+
+  const { correo, contraseña } = req.body;
+
+  try {
+    // Check if the user exists in Persona collection
+    let user = await Persona.findOne({ correo });
+    let tipoES = false;
+    if (!user) {
+      // If not found in Persona, check in Estudiante collection
+      user = await Estudiante.findOne({ correo });
+      tipoES = true;
+    }
+
+    if (!user) {//No se encontro ni persona ni estudiante
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Check the password
+    let isMatch;
+    if(tipoES === false){
+      isMatch = await bcrypt.compare(contraseña, user.contraseña);
+    }else{
+      isMatch = contraseña === user.contraseña;
+    }
+
+
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Contraseña incorrecta' });
+    }
+
+    // If everything is correct, return the user data
+    if(tipoES === false){
+      res.json({
+        _id: user._id,
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo
+      });
+    } else {
+      res.json({
+        nombre: user.nombre,
+        apellido1: user.apellido1,
+        sede: user.sede,
+        tipo: user.tipo,
+        correo: user.correo,
+        carne: user.carne
+      });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+
 
 router.post('/enviar_correo', async (req,res) => {
   const { email, codigo } = req.body;
@@ -305,7 +461,6 @@ router.post('/enviar_correo', async (req,res) => {
 
 router.get('/profesores', async (req, res) => {
   try {
-    console.log("aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     const profesoresPorSede = {};
     const sedes = ['SJ', 'CA', 'SC', 'LM', 'AL'];
     
