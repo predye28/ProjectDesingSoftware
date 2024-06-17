@@ -1,6 +1,7 @@
 const Actividad = require('./models/actividadModel');
 const Notificacion = require('./models/notificacionModel'); 
 //const { PublishVisitor, ReminderVisitor } = require('./visitor');
+//const { NotificationCenter } = require('./Observer'); // Importamos NotificationCenter
 let fechaSimulada;
 
 const enviarNotificacion = async (actividad, tipo) => {
@@ -33,7 +34,21 @@ const setFechaSimulada = async () => {
     }
 };
 
-const getFechaSimulada = () => fechaSimulada;
+
+//const notificationCenter = new NotificationCenter();
+//class NotificacionObserver extends Observer {
+    //update(actividad, tipo) {
+        //enviarNotificacion(actividad, tipo); // Llama a la función de enviarNotificacion
+    //}
+//}
+
+
+//const notificacionObserver = new NotificacionObserver();
+
+
+//notificationCenter.attach(notificacionObserver);
+
+
 
 const actualizarEstadoActividades = async () => {
     try {
@@ -43,19 +58,19 @@ const actualizarEstadoActividades = async () => {
         //const publishVisitor = new PublishVisitor();
         //const reminderVisitor = new ReminderVisitor();
 
-
         for (let actividad of actividades) {
             const { fechaPublicacion, fechasRecordatorio, estadoActividad, notificado, recordatoriosEnviados } = actividad;
 
-            // Verifica si la actividad ya ha sido notificada
+            // VERIFICAR PARA PUBLICAR
             if (estadoActividad === 'Planeada' && ahora >= fechaPublicacion && !notificado) {
                 actividad.estadoActividad = 'Notificada';
                 actividad.notificado = true;
                 await actividad.save();
                 await enviarNotificacion(actividad, 'Actividad Publicada');
+                //NotificationCenter.notify(actividad, 'Actividad Publicada'); // Notificar al NotificationCenter
             }
 
-            // Verifica si los recordatorios ya han sido enviados
+            // VERIFICAR PARA HACER EL RECORDATORIO
             for (let fechaRecordatorio of fechasRecordatorio) {
                 const fechaRecordatorioTime = new Date(fechaRecordatorio).getTime();
                 const yaEnviado = recordatoriosEnviados.some(fecha => new Date(fecha).getTime() === fechaRecordatorioTime);
@@ -64,6 +79,7 @@ const actualizarEstadoActividades = async () => {
                     actividad.recordatoriosEnviados.push(fechaRecordatorio);
                     await actividad.save();
                     await enviarNotificacion(actividad, 'Recordatorio de Actividad');
+                    //NotificationCenter.notify(actividad, 'Recordatorio de Actividad'); // Notificar al NotificationCenter
                 }
             }
             //actividad.accept(publishVisitor); // Publicar actividad
