@@ -1,6 +1,6 @@
 const Actividad = require('./models/actividadModel');
 const Notificacion = require('./models/notificacionModel'); 
-
+//const { PublishVisitor, ReminderVisitor } = require('./visitor');
 let fechaSimulada;
 
 const enviarNotificacion = async (actividad, tipo) => {
@@ -33,10 +33,16 @@ const setFechaSimulada = async () => {
     }
 };
 
+const getFechaSimulada = () => fechaSimulada;
+
 const actualizarEstadoActividades = async () => {
     try {
         const actividades = await Actividad.find();
         const ahora = fechaSimulada || new Date();
+
+        //const publishVisitor = new PublishVisitor();
+        //const reminderVisitor = new ReminderVisitor();
+
 
         for (let actividad of actividades) {
             const { fechaPublicacion, fechasRecordatorio, estadoActividad, notificado, recordatoriosEnviados } = actividad;
@@ -60,6 +66,8 @@ const actualizarEstadoActividades = async () => {
                     await enviarNotificacion(actividad, 'Recordatorio de Actividad');
                 }
             }
+            //actividad.accept(publishVisitor); // Publicar actividad
+            //actividad.accept(reminderVisitor); // Enviar recordatorio
         }
     } catch (error) {
         console.error('Error actualizando actividades:', error);
