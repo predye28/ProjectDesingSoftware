@@ -9,9 +9,9 @@ function MenuPrincipal() {
   const [mostrarCambiarFecha, setMostrarCambiarFecha] = useState(false);
 
   const usuario = JSON.parse(localStorage.getItem('usuario'));
-  const { tipo, nombre, sede, carne, foto, identificacion } = usuario;
-
+  const { tipo, nombre, sede, carne, id} = usuario;
   const handleSalir = () => {
+
     window.location.href = '/';
   };
 
@@ -47,7 +47,7 @@ function MenuPrincipal() {
     handleConsultas: () => { window.location.href = '/Consultas'; },
     handleEditarPerfil: () => { window.location.href = `/EditarEstudiante/${carne}`; },
     handleVerActividades: () => { window.location.href = `/MenuActividades`; },
-    handleVerBuzon: () => { window.location.href = `/Buzon/${persona._id}`; },
+    handleVerBuzon: () => { window.location.href = `/Buzon/${id}`; },
   };
 
   const buttonsConfig = {

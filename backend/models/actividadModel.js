@@ -58,6 +58,14 @@ const actividadSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Estudiante'
     }],
+    notificado: {
+        type: Boolean,
+        default: false
+    },
+    recordatoriosEnviados: [{
+        type: Date
+    }]
 });
+
 module.exports = mongoose.model('Actividad', actividadSchema);
 

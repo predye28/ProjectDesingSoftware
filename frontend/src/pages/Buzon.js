@@ -1,31 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './Buzon.css';
 
 function Buzon() {
-  let { estudianteId } = useParams();
+
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState('all');
   const usuario = JSON.parse(localStorage.getItem('usuario'));
-  const { tipo, carne, id} = usuario;
+  const { id } = usuario;
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(`/api/notificacionRoutes/obtener/${estudianteId}`);
-        setNotifications(response.data);
+        const response = await fetch(`/api/notificacionRoutes/obtener/${id}`);
+        const data = await response.json();
+        setNotifications(data);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
     };
 
     fetchNotifications();
-  }, [estudianteId]);
+  }, [id]);
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notificacionRoutes/borrar/${id}`);
+      await fetch(`/api/notificacionRoutes/borrar/${id}`, {
+        method: 'DELETE'
+      });
       setNotifications(notifications.filter(n => n._id !== id));
     } catch (error) {
       console.error('Error deleting notification:', error);
@@ -34,17 +36,21 @@ function Buzon() {
 
   const handleMarkAsRead = async (id) => {
     try {
-      const response = await axios.put(`/api/notificacionRoutes/actualizar/${id}/leido`);
-      setNotifications(notifications.map(n => (n._id === id ? response.data : n)));
+      const response = await fetch(`/api/notificacionRoutes/actualizar/${id}/leido`, {
+        method: 'PUT'
+      });
+      const updatedNotification = await response.json();
+      setNotifications(notifications.map(n => (n._id === id ? updatedNotification : n)));
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
   };
-  
+
   const filteredNotifications = notifications.filter(n => {
     if (filter === 'all') return true;
     return n.estado === filter;
   });
+
   const handleVolver = () => {
     window.location.href = '/MenuPrincipal';
   };
@@ -77,7 +83,6 @@ function Buzon() {
       </ul>
       <button className='volverMenuPlanTrabajo' onClick={handleVolver}>Volver</button>
     </div>
-    
   );
 }
 

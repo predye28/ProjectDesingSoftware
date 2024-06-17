@@ -342,11 +342,10 @@ router.post('/equipoTrabajo', async (req, res) => {
 
 router.post('/auth', async (req, res) => {
 
-
   const { correo, contraseña } = req.body;
 
   try {
-    // Check if the user exists in Persona collection
+
     let user = await Persona.findOne({ correo });
     let tipoES = false;
     if (!user) {
@@ -384,6 +383,7 @@ router.post('/auth', async (req, res) => {
       });
     } else {
       res.json({
+        _id: user._id,
         nombre: user.nombre,
         apellido1: user.apellido1,
         sede: user.sede,

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 function InscribirActividad() {
   const { id } = useParams();
   const [actividad, setActividad] = useState(null);
-
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
   useEffect(() => {
     const fetchActividad = async () => {
       try {
@@ -40,7 +40,6 @@ function InscribirActividad() {
   }, [id]);
 
   const handleInscribirse = async () => {
-    console.log(localStorage.getItem('usuario')._id )
     try {
       const response = await fetch(`/api/actividadesRoutes/${id}/inscribirse`, {
         method: 'PUT',
@@ -48,7 +47,7 @@ function InscribirActividad() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          estudianteId: localStorage.getItem('usuario')._id  // Asegúrate de obtener el id del estudiante de manera correcta
+          estudianteId: usuario.id  
         })
       });
       if (!response.ok) {
@@ -178,6 +177,7 @@ function InscribirActividad() {
         ) : (
           <p>Cargando información de la actividad...</p>
         )}
+        <button className='volverVerActividad' onClick={handleInscribirse}>Inscribirse</button>
         <button className='volverVerActividad' onClick={handleVolver}>Volver</button>
         
       </div>

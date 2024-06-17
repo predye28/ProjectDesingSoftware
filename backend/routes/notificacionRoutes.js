@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Notificacion = require('../models/notificacionModel');
-const Estudiante = require('../models/estudianteModel');
 
-
-//Crear nueva noti
+// Crear nueva notificación
 router.post('/crear_notificacion', async (req, res) => {
   try {
     const notificacion = new Notificacion(req.body);
@@ -15,17 +13,17 @@ router.post('/crear_notificacion', async (req, res) => {
   }
 });
 
-//Obtener notificaciones en base a carne estudiante
-router.get('/obtener/:estudianteId', async (req, res) => {
+// Obtener notificaciones en base al ID del estudiante
+router.get('/obtener/:id', async (req, res) => {
   try {
-    const notificaciones = await Notificacion.find({ estudianteId: req.params.estudianteId }).sort({ fechaHora: -1 });
+    const notificaciones = await Notificacion.find({ estudiantesInscritos: req.params.id }).sort({ fechaHora: -1 });
     res.json(notificaciones);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-//Actualizar a leido notificacion
+// Actualizar a leído una notificación
 router.put('/actualizar/:id/leido', async (req, res) => {
   try {
     const notificacion = await Notificacion.findByIdAndUpdate(req.params.id, { estado: 'leído' }, { new: true });
@@ -35,14 +33,15 @@ router.put('/actualizar/:id/leido', async (req, res) => {
   }
 });
 
-//Borrar noti leida
+// Borrar una notificación leída
 router.delete('/borrar/:id', async (req, res) => {
   try {
     const notificacion = await Notificacion.findByIdAndDelete(req.params.id);
-    res.json({ message: 'notificacion borrada' });
+    res.json({ message: 'notificación borrada' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 module.exports = router;
+

@@ -100,8 +100,10 @@ router.put('/:id', async (req, res) => {
         return res.status(404).json({ error: 'Actividad no encontrada' });
       }
   
-      const { estudianteId } = req.params.id;
+      const { estudianteId } = req.body;
+      console.log("A")
       console.log(estudianteId)
+      console.log("AA")
   
       // Verificar si el estudianteId está presente y es válido
       if (!estudianteId) {
