@@ -19,7 +19,6 @@ const fechaSistemaRoutes = require('./routes/fechaSistemaRoutes');
 const app = express();
 app.use(bodyParser.json());
 
-// Configurar node-cron para ejecutar la función cada minuto (ajusta según sea necesario)
 cron.schedule('*/20 * * * * *', () => {
   console.log('Ejecutando tarea de actualización de actividades');
   setFechaSimulada();
@@ -33,10 +32,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Guardar archivos estáticos
+
 app.use('/imgEstudiantes', express.static(path.join(__dirname, '../frontend/src/imgEstudiantes')));
 
-// Usa las rutas de personaRoutes
 app.use('/api/personaRoutes', personaRoutes);
 app.use('/api/estudianteRoutes', estudianteRoutes);
 app.use('/api/planesTrabajoRoutes', planesTrabajoRoutes);
